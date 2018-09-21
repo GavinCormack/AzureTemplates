@@ -909,6 +909,10 @@
             "location": "[ resourceGroup().location ]",
             "properties":
             {
+                "availabilitySet":
+                {
+                    "id": "[ resourceId( 'Microsoft.Compute/availabilitySets', concat( parameters( 'Company Prefix' ), '-AS' ) ) ]"
+                },
                 "diagnosticsProfile":
                 {
                     "bootDiagnostics":
@@ -987,6 +991,10 @@
             "location":"[ resourceGroup().location ]",
             "properties":
             {
+                "availabilitySet":
+                {
+                    "id": "[ resourceId( 'Microsoft.Compute/availabilitySets', concat( parameters( 'Company Prefix' ), '-AS' ) ) ]"
+                },
                 "diagnosticsProfile":
                 {
                     "bootDiagnostics":
