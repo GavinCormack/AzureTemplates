@@ -7,8 +7,9 @@
 
 
 # Global Variables
+$scriptsPath = (Get-Item -Path ".\").FullName
+$domainCSVPath = $scriptsPath + "\Domain.csv"
 $downloadsPath = $env:UserProfile + "\Downloads\"
-$domainCSVPath = $env:UserProfile + "\Downloads\domain.csv"
 $rdsConfigTemplatePath = $env:UserProfile + "\Downloads\RDS_Config_Template.xml"
 
 
@@ -91,6 +92,25 @@ Start-Process -FilePath "$downloadsPath\ChromeSetup.exe" -ArgumentList "/silent 
 Start-Sleep -s 80
 
 
+
+Write-Host "    Once Google Chrome Opens, Download 'Office 2016' ISO..."
+Write-Host ""
+Start-Sleep -s 5
+Write-Host "    Opening Google Chrome..."
+Write-Host ""
+
+# Open Webpage in Chrome
+Start-Process -FilePath Chrome -ArgumentList "https://zinon-my.sharepoint.com/personal/gavin_zinon_ie/Documents/Forms/All.aspx?slrid=822a929e-80cd-7000-546c-9799abfb2f71&FolderCTID=0x01200016F9DDF3A879F443A5B37FBCCDFC302F&id=%2Fpersonal%2Fgavin_zinon_ie%2FDocuments%2FAzure_Setup%2FSoftware"
+Start-Process -FilePath Chrome -ArgumentList "http://go.microsoft.com/fwlink/?LinkID=229321"
+
+
+
+
 Write-Host ""
 Write-Host "Script Complete!"
 Write-Host ""
+
+
+
+
+

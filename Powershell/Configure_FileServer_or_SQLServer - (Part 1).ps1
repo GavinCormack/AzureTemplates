@@ -7,8 +7,9 @@
 
 
 # Global Variables
+$scriptsPath = (Get-Item -Path ".\").FullName
+$domainCSVPath = $scriptsPath + "\Domain.csv"
 $downloadsPath = $env:UserProfile + "\Downloads\"
-$domainCSVPath = $env:UserProfile + "\Downloads\domain.csv"
 $fssqlConfigTemplatePath = $env:UserProfile + "\Downloads\FS-SQL_Config_Template.xml"
 
 
@@ -45,17 +46,17 @@ Write-Host ""
 
 # Set the Formats to be Irish, eg. Date, Time
 $registryPath = "HKCU:\Control Panel\International"
-New-ItemProperty -Path $registryPath -Name "LocaleName" -Value "en-IE" -Force
-New-ItemProperty -Path $registryPath -Name "sCountry" -Value "Ireland" -Force
-New-ItemProperty -Path $registryPath -Name "sCurrency" -Value "€" -Force
-New-ItemProperty -Path $registryPath -Name "sDate" -Value "/" -Force
-New-ItemProperty -Path $registryPath -Name "sLanguage" -Value "ENI" -Force
-New-ItemProperty -Path $registryPath -Name "sLongDate" -Value "dddd d MMMM yyyy" -Force
-New-ItemProperty -Path $registryPath -Name "sShortDate" -Value "dd/MM/yyyy" -Force
-New-ItemProperty -Path $registryPath -Name "sTime" -Value ":" -Force
-New-ItemProperty -Path $registryPath -Name "sTimeFormat" -Value "HH:mm:ss" -Force
-New-ItemProperty -Path $registryPath -Name "sShortTime" -Value "HH:mm" -Force
-New-ItemProperty -Path $registryPath -Name "sYearMonth" -Value "MMMM yyyy" -Force
+Set-ItemProperty -Path $registryPath -Name "LocaleName" -Value "en-IE" -Force
+Set-ItemProperty -Path $registryPath -Name "sCountry" -Value "Ireland" -Force
+Set-ItemProperty -Path $registryPath -Name "sCurrency" -Value "€" -Force
+Set-ItemProperty -Path $registryPath -Name "sDate" -Value "/" -Force
+Set-ItemProperty -Path $registryPath -Name "sLanguage" -Value "ENI" -Force
+Set-ItemProperty -Path $registryPath -Name "sLongDate" -Value "dddd d MMMM yyyy" -Force
+Set-ItemProperty -Path $registryPath -Name "sShortDate" -Value "dd/MM/yyyy" -Force
+Set-ItemProperty -Path $registryPath -Name "sTime" -Value ":" -Force
+Set-ItemProperty -Path $registryPath -Name "sTimeFormat" -Value "HH:mm:ss" -Force
+Set-ItemProperty -Path $registryPath -Name "sShortTime" -Value "HH:mm" -Force
+Set-ItemProperty -Path $registryPath -Name "sYearMonth" -Value "MMMM yyyy" -Force
 
 
 Write-Host "    Setting location to Ireland..."
@@ -63,7 +64,7 @@ Write-Host ""
 
 # Set location to be Ireland
 $registryPath = $registryPath + "\Geo"
-New-ItemProperty -Path $registryPath -Name "Nation" -Value "68" -Force
+Set-ItemProperty -Path $registryPath -Name "Nation" -Value "68" -Force
 
 
 Write-Host "    Turning Off IE Enhanced Security Configuration..."

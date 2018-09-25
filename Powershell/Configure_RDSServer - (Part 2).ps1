@@ -47,9 +47,10 @@ Set-Service -Name "WSearch" -StartupType Automatic
 Start-Service -Name "WSearch"
 
 
-Write-Host "    Restarting Server..."
-Write-Host ""
-Start-Sleep -s 2
 
 ##########  SERVER WILL REBOOT  ##########
+
+Write-Host "Rebooting Server in 10 seconds..."
+Start-Sleep -s 10
+
 Restart-Computer

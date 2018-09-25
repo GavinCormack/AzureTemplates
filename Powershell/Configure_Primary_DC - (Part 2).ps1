@@ -7,13 +7,15 @@
 
 
 # Global Variables
+$scriptsPath = (Get-Item -Path ".\").FullName
+$domainCSVPath = $scriptsPath + "\Domain.csv"
+$usersCSVPath = $scriptsPath + "\Users.csv"
+$downloadsPath = $env:UserProfile + "\Downloads\"
 $gpoZipPath = $env:UserProfile + "\Downloads\GPO.zip"
 $gpoPath = $env:UserProfile + "\Downloads\GPO"
 $admxZipPath = $env:UserProfile + "\Downloads\ADMX_Templates.zip"
 $admxPath = $env:UserProfile + "\Downloads\ADMX_Templates"
-$downloadsPath = $env:UserProfile + "\Downloads\"
-$domainCSVPath = $env:UserProfile + "\Downloads\domain.csv"
-$usersCSVPath = $env:UserProfile + "\Downloads\users.csv"
+$backgroundPath = $env:UserProfile + "\Downloads\background1.bmp"
 
 
 # Brief Overview of Script Contents
@@ -94,17 +96,15 @@ $users = Import-Csv $usersCSVPath -Delimiter ","
 foreach ($user in $users) {            
     $displayname = $user.'Firstname' + " " + $user.'Lastname'            
     $userFirstname = $user.'Firstname'            
-    $userLastname = $user.'Lastname'            
-    $ou = $user.'OU'            
-    $sam = $user.'SAM'            
-    $upn = $user.'SAM' + $fullDomain           
-    $description = $user.'Description'            
+    $userLastname = $user.'Lastname'          
+    $username = $user.'Username'            
+    $upn = $user.'SAM' + $fullDomain               
     $password = $user.'Password'      
     
     Write-Host "        Creating User - " + $displayname + "..."
           
-    New-ADUser -Name $displayname -DisplayName $displayname -SamAccountName $sam -UserPrincipalName $upn -GivenName $userFirstname -Surname $userLastname -Description $description -AccountPassword (ConvertTo-SecureString $password -AsPlainText -Force) -Enabled $true -Path $ou -ChangePasswordAtLogon $false –PasswordNeverExpires $true -server $fullDomain           
-    Add-ADGroupMember -Identity RDPUsers -Members $displayname
+    New-ADUser -Name $displayname -DisplayName $displayname -SamAccountName $username -UserPrincipalName $upn -GivenName $userFirstname -Surname $userLastname -Description "" -AccountPassword (ConvertTo-SecureString $password -AsPlainText -Force) -Enabled $true -Path $ouPath -ChangePasswordAtLogon $false –PasswordNeverExpires $true -server $fullDomain           
+    Add-ADGroupMember -Identity RDPUsers -Members $username
 }
 
 
@@ -179,15 +179,15 @@ Write-Host ""
 Start-Sleep -s 1
 
 
-Write-Host "    Once Google Chrome Opens, Download Both Zip Files to Downloads Folder, Then Resume This Script..."
+Write-Host "    Once Google Chrome Opens, Download Both Zip Files to Downloads Folder and Background1.bmp, Then Resume This Script..."
 Write-Host ""
 Start-Sleep -s 5
 Write-Host "    Opening Google Chrome..."
 Write-Host ""
 
 # Open Webpage in Chrome
-Start-Process -FilePath Chrome -ArgumentList "https://zinon-my.sharepoint.com/personal/gavin_zinon_ie/Documents/Forms/All.aspx?slrid=f7da919e-50f3-7000-546c-9979fd0f5fba&FolderCTID=0x01200016F9DDF3A879F443A5B37FBCCDFC302F&id=%2Fpersonal%2Fgavin_zinon_ie%2FDocuments%2FAzure_Setup%2FAzure_GPO" #https://goo.gl/M82fFB
-
+Start-Process -FilePath Chrome -ArgumentList "https://zinon-my.sharepoint.com/personal/gavin_zinon_ie/Documents/Forms/All.aspx?slrid=f7da919e-50f3-7000-546c-9979fd0f5fba&FolderCTID=0x01200016F9DDF3A879F443A5B37FBCCDFC302F&id=%2Fpersonal%2Fgavin_zinon_ie%2FDocuments%2FAzure_Setup%2FAzure_GPO"
+Start-Process -FilePath Chrome -ArgumentList "https://zinon-my.sharepoint.com/personal/gavin_zinon_ie/Documents/Forms/All.aspx?slrid=822a929e-80cd-7000-546c-9799abfb2f71&FolderCTID=0x01200016F9DDF3A879F443A5B37FBCCDFC302F&id=%2Fpersonal%2Fgavin_zinon_ie%2FDocuments%2FAzure_Setup%2FDesktop%20Backgrounds"
 
 
 
@@ -213,7 +213,7 @@ Unzip $gpoZipPath $gpoPath
 Unzip $admxZipPath $admxPath
 
 
-Write-Host "    Changing Current Working Directory..."
+Write-Host "    Changing Current Working Directory to Downloads..."
 Write-Host ""
 
 # Change Current Directory to User Downloads
@@ -244,8 +244,26 @@ Write-Host ""
 Import-GPO -BackupGpoName RDPUsers -Path $gpoPath -TargetName RDPUsers
 
 
+Write-Host "    Moving Desktop Background..."
+Write-Host ""
+
+# Move Desktop Background to C:\Zinon
+Move-Item -Source $backgroundPath -Destination $scriptsPath
+
+
+
 
 Write-Host ""
 Write-Host "Script Complete!"
 Write-Host ""
+
+
+
+##########  SERVER WILL REBOOT  ##########
+
+Write-Host "Rebooting Server in 10 seconds..."
+Start-Sleep -s 10
+
+Restart-Computer
+
 

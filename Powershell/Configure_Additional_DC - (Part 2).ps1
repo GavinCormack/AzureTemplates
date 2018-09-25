@@ -93,3 +93,11 @@ Write-Host ""
 Write-Host "Script Complete!"
 Write-Host ""
 
+
+
+##########  SERVER WILL REBOOT  ##########
+
+Write-Host "Rebooting Server in 10 seconds..."
+Start-Sleep -s 10
+
+Restart-Computer
