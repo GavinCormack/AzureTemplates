@@ -262,7 +262,7 @@ Once the Azure ARM Template has completed & the CSV files have been completed, w
 	* Click 'Session-Based Desktop Deployment'.
 	* Click the arrow on the next screens to move the Servers into the lists.
 	* Click 'Restart the destination server automatically if required'.
-	* Reboot the Server once it is complete, if it did not reboot itself. **(Make sure it has complete before rebooting)**
+	* Reboot the Server once it is complete, if it did not reboot itself. **(Make sure it has completed before rebooting)**
 * User Collections need to be configured.
 * Server needs to be licensed.
 * Software needs to be installed.
