@@ -1,0 +1,1793 @@
+
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters":
+    {
+        "Company Prefix":
+        {
+            "type": "string",
+            "defaultValue": "",
+            "maxLength": 8,
+            "metadata": 
+            {
+                "description": "The Company Prefix that will be at the beginning of each resource in Azure. Usually the same as the Company Domain in Active Directory.  (Must be 8 or less characters in length)"
+            }
+        },
+        "Local Admin Password":
+        {
+            "type": "securestring",
+            "defaultValue": "",
+            "minLength": 12,
+            "metadata": 
+            {
+                "description": "The Local Admin Password for the Virtual Machines.  (Must be at least 12 character long)"
+            }
+        },
+        "VMware Address Space":
+        {
+            "type": "array",
+            "defaultValue": 
+            [
+                "10.x.x.0/24"
+            ],
+            "minLength": 1,
+            "metadata": 
+            {
+                "description": "The Address Space of the Companies network on VMware"
+            }
+        },
+        "VPN Shared Key":
+        {
+            "type": "securestring",
+            "defaultValue": "",
+            "minLength": 10,
+            "metadata": 
+            {
+                "description": "The Shared Key for the VPN Connection between VMware and Azure.  (Must be at least 10 character long)"
+            }
+        },
+        "SSD Enabled VM Sizes":
+        {
+            "type": "string",
+            "defaultValue": "Standard_B2s",
+            "allowedValues": 
+            [
+                "Standard_B1s", 
+                "Standard_B1ms", 
+                "Standard_B2s", 
+                "Standard_B2ms", 
+                "Standard_B4ms", 
+                "Standard_B8ms", 
+                "Standard_D2s_v3", 
+                "Standard_D4s_v3", 
+                "Standard_D8s_v3", 
+                "Standard_D16s_v3", 
+                "Standard_D32s_v3", 
+                "Standard_D64s_v3", 
+                "Standard_DS1", 
+                "Standard_DS2", 
+                "Standard_DS3", 
+                "Standard_DS4", 
+                "Standard_DS11", 
+                "Standard_DS12", 
+                "Standard_DS13", 
+                "Standard_DS14", 
+                "Standard_DS1_v2", 
+                "Standard_DS2_v2", 
+                "Standard_DS3_v2", 
+                "Standard_DS4_v2", 
+                "Standard_DS5_v2", 
+                "Standard_DS11_v2", 
+                "Standard_DS12_v2", 
+                "Standard_DS13_v2", 
+                "Standard_DS14_v2", 
+                "Standard_DS15_v2", 
+                "Standard_DS13-4_v2", 
+                "Standard_DS13-2_v2", 
+                "Standard_DS14-8_v2", 
+                "Standard_DS14-4_v2", 
+                "Standard_E2s_v3", 
+                "Standard_E4s_v3", 
+                "Standard_E8s_v3", 
+                "Standard_E16s_v3", 
+                "Standard_E32s_v3", 
+                "Standard_E64s_v3", 
+                "Standard_E32-16_v3", 
+                "Standard_E32-8s_v3", 
+                "Standard_E64-32s_v3", 
+                "Standard_E64-16s_v3", 
+                "Standard_F1s", 
+                "Standard_F2s", 
+                "Standard_F4s", 
+                "Standard_F8s", 
+                "Standard_F16s", 
+                "Standard_F2s_v2", 
+                "Standard_F4s_v2", 
+                "Standard_F8s_v2", 
+                "Standard_F16s_v2", 
+                "Standard_F32s_v2", 
+                "Standard_F64s_v2", 
+                "Standard_F72s_v2", 
+                "Standard_GS1", 
+                "Standard_GS2", 
+                "Standard_GS3", 
+                "Standard_GS4", 
+                "Standard_GS5", 
+                "Standard_GS4-8", 
+                "Standard_GS4-4", 
+                "Standard_GS5-16", 
+                "Standard_GS5-8", 
+                "Standard_L4s", 
+                "Standard_L8s", 
+                "Standard_L16s", 
+                "Standard_L32s", 
+                "Standard_M64s", 
+                "Standard_M64ms", 
+                "Standard_M128s", 
+                "Standard_M128ms", 
+                "Standard_M64-32ms", 
+                "Standard_M64-16ms", 
+                "Standard_M128-64ms", 
+                "Standard_M128-32ms", 
+                "Standard_NC6s_v2", 
+                "Standard_NC12s_v2", 
+                "Standard_NC24s_v2", 
+                "Standard_NC24rs_v2", 
+                "Standard_NC6s_v3", 
+                "Standard_NC12s_v3", 
+                "Standard_NC24s_v3", 
+                "Standard_NC24rs_v3", 
+                "Standard_ND6s", 
+                "Standard_ND12s", 
+                "Standard_ND24s", 
+                "Standard_ND24rs"
+            ],
+            "metadata": 
+            {
+                "description": "This is just for reference this does not affect this deployment."
+            }
+        },
+        "Availability Set":
+        {
+            "type": "string",
+            "defaultValue": "true",
+            "allowedValues": 
+            [
+                "true",
+                "false"
+            ],
+            "metadata": 
+            {
+                "description": "Do you want to create an Availability Set (Puts the DCs on separate hosts to avoid downtime)"
+            }
+        },
+        "Number of Domain Controllers":
+        {
+            "type": "int",
+            "defaultValue": 1,
+            "minValue": 0,
+            "metadata": 
+            {
+                "description": "The Number of Domain Controller Servers (DC) to provision."
+            }
+        },
+        "Custom Domain Controller Names":
+        {
+            "type": "array",
+            "defaultValue": [],
+            "metadata": 
+            {
+                "description": "If you want a custom name for the Domain Controllers. Enter the name you want after the <Company_Prefix> ie. <Compnay_Prefix>-XXXXXXXX  Enter the name inside [] and put '' around the name, if you have more than one, put a comma in between.  i.e  ['SRV-01','SRV-02'] -- By Default leaving this blank will create the machines with   <Company_Prefix>-DC-XX   (where XX is the Server number)"
+            }
+        },
+        "Domain Controller VM Size":
+        {
+            "type": "string",
+            "defaultValue": "Standard_B2s",
+            "metadata": 
+            {
+                "description": "The Size of the Domain Controller Server (DC) provisioned."
+            }
+        },
+        "Domain Controller VM Type":
+        {
+            "type": "string",
+            "defaultValue": "Premium_LRS",
+            "allowedValues": 
+            [
+                "Standard_LRS",
+                "Premium_LRS"
+            ],
+            "metadata": 
+            {
+                "description": "The Type of Domain Controller (DC) VM to be provisioned. (Standard_LRS = HDD / Premium_LRS = SSD)"
+            }
+        },
+        "Domain Controller OS Version":
+        {
+            "type": "string",
+            "defaultValue": "2016-Datacenter",
+            "allowedValues": 
+            [
+                "2008-R2-SP1",
+                "2012-Datacenter",
+                "2012-R2-Datacenter",
+                "2016-Datacenter"
+              ],
+              "metadata": 
+              {
+                "description": "The Windows version for the Domain Controllers."
+              }
+        },
+        "Number of Domain Controller Extra Data Disks":
+        {
+            "type": "int",
+            "defaultValue": 0,
+            "minValue": 0,
+            "metadata": 
+            {
+                "description": "The number of Extra Data Disks to add onto a Domain Controller?  NOTE: This will only add them to the first Domain Controller if more than one is provisioned."
+            }
+        },
+        "Domain Controller Extra Data Disk Size":
+        {
+            "type": "string",
+            "defaultValue": "1023",
+            "allowedValues": 
+            [
+                "32",
+                "64",
+                "128",
+                "256",
+                "512",
+                "1023",
+                "2047",
+                "4095"
+            ],
+            "metadata": 
+            {
+                "description": "The Size of the extra Data Disk in Gigabytes (GB)."
+            }
+        },
+        "Number of RDS Servers":
+        {
+            "type": "int",
+            "defaultValue": 1,
+            "minValue": 0,
+            "metadata": 
+            {
+                "description": "The Number of RDS Servers (RDS) to provision."
+            }
+        },
+        "Custom RDS Server Names":
+        {
+            "type": "array",
+            "defaultValue": [],
+            "metadata": 
+            {
+                "description": "If you want a custom name for the RDS Servers. Enter the name you want after the <Company_Prefix> ie. <Compnay_Prefix>-XXXXXXXX  Enter the name inside [] and put '' around the name, if you have more than one, put a comma in between.  i.e  ['SRV-01','SRV-02'] -- By Default leaving this blank will create the machines with   <Company_Prefix>-RDS-XX   (where XX is the Server number)"
+            }
+        },
+        "RDS Server VM Size":
+        {
+            "type": "string",
+            "defaultValue": "Standard_D2s_v3",
+            "metadata": 
+            {
+                "description": "The Size of the RDS Server (RDS) provisioned."
+            }
+        },
+        "RDS Server VM Type":
+        {
+            "type": "string",
+            "defaultValue": "Premium_LRS",
+            "allowedValues": 
+            [
+                "Standard_LRS",
+                "Premium_LRS"
+            ],
+            "metadata": 
+            {
+                "description": "The Type of RDS Server (RDS) VM to be provisioned. (Standard_LRS = HDD / Premium_LRS = SSD)"
+            }
+        },
+        "RDS Server OS Version":
+        {
+            "type": "string",
+            "defaultValue": "2016-Datacenter",
+            "allowedValues": 
+            [
+                "2008-R2-SP1",
+                "2012-Datacenter",
+                "2012-R2-Datacenter",
+                "2016-Datacenter"
+              ],
+              "metadata": 
+              {
+                "description": "The Windows version for the RDS Servers."
+              }
+        },
+        "Number of RDS Server Extra Data Disks":
+        {
+            "type": "int",
+            "defaultValue": 0,
+            "minValue": 0,
+            "metadata": 
+            {
+                "description": "The number of Extra Data Disks to add onto a RDS Server?  NOTE: This will only add them to the first RDS Server if more than one is provisioned."
+            }
+        },
+        "RDS Server Extra Data Disk Size":
+        {
+            "type": "string",
+            "defaultValue": "1023",
+            "allowedValues": 
+            [
+                "32",
+                "64",
+                "128",
+                "256",
+                "512",
+                "1023",
+                "2047",
+                "4095"
+            ],
+            "metadata": 
+            {
+                "description": "The Size of the extra Data Disk in Gigabytes (GB)."
+            }
+        },
+        "Number of File Servers":
+        {
+            "type": "int",
+            "defaultValue": 1,
+            "minValue": 0,
+            "metadata": 
+            {
+                "description": "The Number of File Servers (FS) to provision."
+            }
+        },
+        "Custom File Server Names":
+        {
+            "type": "array",
+            "defaultValue": [],
+            "metadata": 
+            {
+                "description": "If you want a custom name for the File Servers. Enter the name you want after the <Company_Prefix> ie. <Compnay_Prefix>-XXXXXXXX  Enter the name inside [] and put '' around the name, if you have more than one, put a comma in between.  i.e  ['SRV-01','SRV-02'] -- By Default leaving this blank will create the machines with   <Company_Prefix>-FS-XX   (where XX is the Server number)"
+            }
+        },
+        "File Server VM Size":
+        {
+            "type": "string",
+            "defaultValue": "Standard_B2s",
+            "metadata": 
+            {
+                "description": "The Size of the File Server (FS) provisioned."
+            }
+        },
+        "File Server VM Type":
+        {
+            "type": "string",
+            "defaultValue": "Premium_LRS",
+            "allowedValues": 
+            [
+                "Standard_LRS",
+                "Premium_LRS"
+            ],
+            "metadata": 
+            {
+                "description": "The Type of File Server (FS) VM to be provisioned. (Standard_LRS = HDD / Premium_LRS = SSD)"
+            }
+        },
+        "File Server OS Version":
+        {
+            "type": "string",
+            "defaultValue": "2016-Datacenter",
+            "allowedValues": 
+            [
+                "2008-R2-SP1",
+                "2012-Datacenter",
+                "2012-R2-Datacenter",
+                "2016-Datacenter"
+              ],
+              "metadata": 
+              {
+                "description": "The Windows version for the File Servers."
+              }
+        },
+        "Number of File Server Extra Data Disks":
+        {
+            "type": "int",
+            "defaultValue": 0,
+            "minValue": 0,
+            "metadata": 
+            {
+                "description": "The number of Extra Data Disks to add onto a File Server?  NOTE: This will only add them to the first File Server if more than one is provisioned."
+            }
+        },
+        "File Server Extra Data Disk Size":
+        {
+            "type": "string",
+            "defaultValue": "1023",
+            "allowedValues": 
+            [
+                "32",
+                "64",
+                "128",
+                "256",
+                "512",
+                "1023",
+                "2047",
+                "4095"
+            ],
+            "metadata": 
+            {
+                "description": "The Size of the extra Data Disk in Gigabytes (GB)."
+            }
+        },
+        "Number of SQL Servers":
+        {
+            "type": "int",
+            "defaultValue": 1,
+            "minValue": 0,
+            "metadata": 
+            {
+                "description": "The Number of SQL Servers (SQL) to provision."
+            }
+        },
+        "Custom SQL Server Names":
+        {
+            "type": "array",
+            "defaultValue": [],
+            "metadata": 
+            {
+                "description": "If you want a custom name for the SQL Servers. Enter the name you want after the <Company_Prefix> ie. <Compnay_Prefix>-XXXXXXXX  Enter the name inside [] and put '' around the name, if you have more than one, put a comma in between.  i.e  ['SRV-01','SRV-02'] -- By Default leaving this blank will create the machines with   <Company_Prefix>-SQL-XX   (where XX is the Server number)"
+            }
+        },
+        "SQL Server VM Size":
+        {
+            "type": "string",
+            "defaultValue": "Standard_B2s",
+            "metadata": 
+            {
+                "description": "The Size of the SQL Server (SQL) provisioned."
+            }
+        },
+        "SQL Server VM Type":
+        {
+            "type": "string",
+            "defaultValue": "Premium_LRS",
+            "allowedValues": 
+            [
+                "Standard_LRS",
+                "Premium_LRS"
+            ],
+            "metadata": 
+            {
+                "description": "The Type of SQL Server (DC) VM to be provisioned. (Standard_LRS = HDD / Premium_LRS = SSD)"
+            }
+        },
+        "SQL Server OS Version":
+        {
+            "type": "string",
+            "defaultValue": "2016-Datacenter",
+            "allowedValues": 
+            [
+                "2008-R2-SP1",
+                "2012-Datacenter",
+                "2012-R2-Datacenter",
+                "2016-Datacenter"
+              ],
+              "metadata": 
+              {
+                "description": "The Windows version for the SQL Servers."
+              }
+        },
+        "Number of SQL Server Extra Data Disks":
+        {
+            "type": "int",
+            "defaultValue": 0,
+            "minValue": 0,
+            "metadata": 
+            {
+                "description": "The number of Extra Data Disks to add onto a SQL Server?  NOTE: This will only add them to the first SQL Server if more than one is provisioned."
+            }
+        },
+        "SQL Server Extra Data Disk Size":
+        {
+            "type": "string",
+            "defaultValue": "1023",
+            "allowedValues": 
+            [
+                "32",
+                "64",
+                "128",
+                "256",
+                "512",
+                "1023",
+                "2047",
+                "4095"
+            ],
+            "metadata": 
+            {
+                "description": "The Size of the extra Data Disk in Gigabytes (GB)."
+            }
+        }
+    },
+    "variables": 
+    {
+        "DiagnosticStorageAccountName": "[ toLower( concat( parameters( 'Company Prefix' ), 'diag01' ) ) ]",
+        "BackupStorageAccountName": "[ toLower( concat( parameters( 'Company Prefix' ), 'backup01' ) ) ]",
+        "VirtualNetworkName": "[ concat( toUpper( parameters( 'Company Prefix' ) ), '-VNET-01' ) ]",
+        "VirtualNetworkSubnetName": "[ concat( parameters( 'Company Prefix' ), '-SubNET-01' ) ]",
+        "VirtualNetworkSubnetNSGName": "[ concat( variables( 'VirtualNetworkSubnetName' ), '-NSG' ) ]",
+        "VirtualNetworkGatewayName": "[ concat( variables( 'VirtualNetworkName' ), '-GW' ) ]",
+        "LocalNetworkGatewayName": "[ concat( parameters( 'Company Prefix' ), '-LN-GW' ) ]",
+       "copy": 
+        [
+            {
+                "name": "DomainControllerDataDisks",
+                "count": "[ if( equals( parameters( 'Number of Domain Controller Extra Data Disks' ), 0 ), 1, parameters( 'Number of Domain Controller Extra Data Disks' ) ) ]",
+                "input": 
+                {
+                    "name": "[ if( greater( length( parameters( 'Custom Domain Controller Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom Domain Controller Names' )[ 0 ], '-Disk-0', add( copyIndex( 'DomainControllerDataDisks' ), 1 ) ), concat( parameters( 'Company Prefix' ), '-DC-01-Disk-0', add( copyIndex( 'DomainControllerDataDisks' ), 1 ) ) ) ]",
+                    "diskSizeGB": "[ parameters( 'Domain Controller Extra Data Disk Size' ) ]",
+                    "lun": "[ copyIndex( 'DomainControllerDataDisks' ) ]",
+                    "createOption": "Empty",
+                    "managedDisk": 
+                    {
+                        "storageAccountType": "[ parameters( 'Domain Controller VM Type' ) ]"
+                    }
+                }
+            },
+            {
+                "name": "RDSServerDataDisks",
+                "count": "[ if( equals( parameters( 'Number of RDS Server Extra Data Disks' ), 0 ), 1, parameters( 'Number of RDS Server Extra Data Disks' ) ) ]",
+                "input": 
+                {
+                    "name": "[ if( greater( length( parameters( 'Custom RDS Server Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom RDS Server Names' )[ 0 ], '-Disk-0', add( copyIndex( 'RDSServerDataDisks' ), 1 ) ), concat( parameters( 'Company Prefix' ), '-RDS-01-Disk-0', add( copyIndex( 'RDSServerDataDisks' ), 1 ) ) ) ]",
+                    "diskSizeGB": "[ parameters( 'RDS Server Extra Data Disk Size' ) ]",
+                    "lun": "[ copyIndex( 'RDSServerDataDisks' ) ]",
+                    "createOption": "Empty",
+                    "managedDisk": 
+                    {
+                        "storageAccountType": "[ parameters( 'RDS Server VM Type' ) ]"
+                    }
+                }
+            },
+            {
+                "name": "FileServerDataDisks",
+                "count": "[ if( equals( parameters( 'Number of File Server Extra Data Disks' ), 0 ), 1, parameters( 'Number of File Server Extra Data Disks' ) ) ]",
+                "input": 
+                {
+                    "name": "[ if( greater( length( parameters( 'Custom File Server Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom File Server Names' )[ 0 ], '-Disk-0', add( copyIndex( 'FileServerDataDisks' ), 1 ) ), concat( parameters( 'Company Prefix' ), '-FS-01-Disk-0', add( copyIndex( 'FileServerDataDisks' ), 1 ) ) ) ]",
+                    "diskSizeGB": "[ parameters( 'File Server Extra Data Disk Size' ) ]",
+                    "lun": "[ copyIndex( 'FileServerDataDisks' ) ]",
+                    "createOption": "Empty",
+                    "managedDisk": 
+                    {
+                        "storageAccountType": "[ parameters( 'File Server VM Type' ) ]"
+                    }
+                }
+            },
+            {
+                "name": "SQLServerDataDisks",
+                "count": "[ if( equals( parameters( 'Number of SQL Server Extra Data Disks' ), 0 ), 1, parameters( 'Number of SQL Server Extra Data Disks' ) ) ]",
+                "input": 
+                {
+                    "name": "[ if( greater( length( parameters( 'Custom SQL Server Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom SQL Server Names' )[ 0 ], '-Disk-0', add( copyIndex( 'SQLServerDataDisks' ), 1 ) ), concat( parameters( 'Company Prefix' ), '-SQL-01-Disk-0', add( copyIndex( 'SQLServerDataDisks' ), 1 ) ) ) ]",
+                    "diskSizeGB": "[ parameters( 'SQL Server Extra Data Disk Size' ) ]",
+                    "lun": "[ copyIndex( 'SQLServerDataDisks' ) ]",
+                    "createOption": "Empty",
+                    "managedDisk": 
+                    {
+                        "storageAccountType": "[ parameters( 'SQL Server VM Type' ) ]"
+                    }
+                }
+            }
+        ]
+
+    },
+    "resources": 
+    [
+        {
+            "comments": "Diagnostic Storage Account",
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2018-03-01-preview",
+            "name": "[ variables( 'DiagnosticStorageAccountName' ) ]",
+            "location":"[ resourceGroup().location ]",
+            "sku":
+            {
+                "name": "Standard_LRS"
+            },
+            "kind": "Storage",
+            "properties":
+            {
+                "encryption":
+                {
+                    "keySource": "Microsoft.Storage",
+                    "services":
+                    {
+                        "blob":
+                        {
+                            "enabled":true
+                        },
+                        "file":
+                        {
+                            "enabled":true
+                        }
+                    }
+                },
+                "supportsHttpsTrafficOnly": false
+            },
+            "dependsOn": 
+            [ ]
+        },
+        {
+            "comments": "Virtual Network",
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2018-08-01",
+            "name": "[ variables( 'VirtualNetworkName' ) ]",
+            "location":"[ resourceGroup().location ]",
+            "properties":
+            {
+                "addressSpace":
+                {
+                    "addressPrefixes":
+                    [
+                        "10.1.0.0/16"
+                    ]
+                },
+                "dhcpOptions":
+                {
+                    "dnsServers":
+                    [
+                        "10.1.1.4",
+                        "168.63.129.16",
+                        "168.62.167.9"
+                    ]
+                },
+                "subnets":
+                [
+                    {
+                        "name": "[ variables( 'VirtualNetworkSubnetName' ) ]",
+                        "properties":
+                        {
+                            "addressPrefix": "10.1.1.0/25",
+                            "networkSecurityGroup":
+                            {
+                                "id": "[ resourceId( 'Microsoft.Network/networkSecurityGroups', variables( 'VirtualNetworkSubnetNSGName' ) ) ]"
+                            }
+                        }
+                    },
+                    {
+                        "name": "GatewaySubnet",
+                        "properties":
+                        {
+                            "addressPrefix": "10.1.1.128/28"
+                        }
+                    }
+                ]
+            },
+            "dependsOn": 
+            [
+                "[ concat( 'Microsoft.Network/networkSecurityGroups/', variables( 'VirtualNetworkSubnetNSGName' ) ) ]"
+            ]
+        },
+        {
+            "comments": "Local Network Gateway",
+            "type": "Microsoft.Network/localNetworkGateways",
+            "apiVersion": "2018-08-01",
+            "name": "[ variables( 'LocalNetworkGatewayName' ) ]",
+            "location": "[ resourceGroup().location ]",
+            "properties":
+            {
+                "localNetworkAddressSpace":
+                {
+                    "addressPrefixes": "[ parameters( 'VMware Address Space' ) ]"
+                },
+                "gatewayIpAddress": "193.120.46.36"
+            }
+        },
+        {
+            "comments": "Virtual Network Gateway",
+            "type": "Microsoft.Network/virtualNetworkGateways",
+            "apiVersion": "2018-08-01",
+            "name": "[ variables( 'VirtualNetworkGatewayName' ) ]",
+            "location": "[ resourceGroup().location ]",
+            "properties": 
+            {
+                "ipConfigurations":
+                [
+                    {
+                        "properties":
+                        {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress":
+                            {
+                                "id": "[ resourceId( 'Microsoft.Network/publicIPAddresses', concat( variables( 'VirtualNetworkGatewayName' ), '-PIP' ) ) ]"
+                            },
+                            "subnet":
+                            {
+                                "id": "[ resourceId( 'Microsoft.Network/virtualNetworks/subnets', variables( 'VirtualNetworkName' ), 'GatewaySubnet' ) ]"
+                            }
+                        },
+                        "name": "VNETGatewayConfig"
+                    }
+                ],
+                "sku":
+                {
+                    "name": "Basic",
+                    "tier": "Basic"
+                },
+                "gatewayType": "Vpn",
+                "vpnType": "RouteBased",
+                "enableBgp": false,
+                "activeActive": false,
+                "vpnClientConfiguration":
+                {
+                    "vpnClientProtocols":
+                    [
+                        "SSTP"
+                    ]
+                }
+            },
+            "dependsOn":
+            [
+                "[ concat( 'Microsoft.Network/publicIPAddresses/', variables( 'VirtualNetworkGatewayName' ), '-PIP' ) ]",
+                "[ concat( 'Microsoft.Network/virtualNetworks/', variables( 'VirtualNetworkName' ) ) ]"
+            ]
+        },
+        {
+            "comments": "Connection between Gateways",
+            "type": "Microsoft.Network/connections",
+            "apiVersion": "2018-08-01",
+            "name": "Old-Azure",
+            "location": "[ resourceGroup().location ]",
+            "properties": 
+            {
+                "virtualNetworkGateway1":
+                {
+                    "id": "[ resourceId( 'Microsoft.Network/virtualNetworkGateways', variables( 'VirtualNetworkGatewayName' ) ) ]"
+                },
+                "localNetworkGateway2":
+                {
+                    "id": "[ resourceId( 'Microsoft.Network/localNetworkGateways', variables( 'LocalNetworkGatewayName' ) )]"
+                },
+                "connectionType": "IPsec",
+                "sharedKey": "[ parameters( 'VPN Shared Key' ) ]"
+            },
+            "dependsOn": 
+            [
+                "[ concat( 'Microsoft.Network/virtualNetworkGateways/', variables( 'VirtualNetworkGatewayName' ) ) ]",
+                "[ concat( 'Microsoft.Network/localNetworkGateways/', variables( 'LocalNetworkGatewayName' ) ) ]"
+            ]
+
+        },
+        {
+            "comments": "Network Security Group for SubNET-01",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "apiVersion": "2018-08-01",
+            "name": "[ variables( 'VirtualNetworkSubnetNSGName' ) ]",
+            "location":"[ resourceGroup().location ]",
+            "properties":
+            {
+                "defaultSecurityRules":
+                [
+                    {
+                        "name": "AllowVnetInBound",
+                        "properties":
+                         {
+                            "access": "Allow",
+                            "description": "Allow inbound traffic from all VMs in VNET",
+                            "destinationAddressPrefix": "VirtualNetwork",
+                            "destinationPortRange": "*",
+                            "direction": "Inbound",
+                            "priority": 65000,
+                            "protocol": "*",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "sourcePortRange": "*"
+                         }
+                    },
+                    {
+                        "name": "AllowAzureLoadBalancerInBound",
+                        "properties": 
+                        {
+                            "access": "Allow",
+                            "description": "Allow inbound traffic from azure load balancer",
+                            "destinationAddressPrefix": "*",
+                            "destinationPortRange": "*",
+                            "direction": "Inbound",
+                            "priority": 65001,
+                            "protocol": "*",
+                            "sourceAddressPrefix": "AzureLoadBalancer",
+                            "sourcePortRange": "*"
+                        }
+                    },
+                    {
+                        "name": "DenyAllInBound",
+                        "properties": 
+                        {
+                            "access": "Deny",
+                            "description": "Deny all inbound traffic",
+                            "destinationAddressPrefix": "*",
+                            "destinationPortRange": "*",
+                            "direction": "Inbound",
+                            "priority": 65500,
+                            "protocol": "*",
+                            "sourceAddressPrefix": "*",
+                            "sourcePortRange": "*"
+                        }
+                    },
+                    {
+                        "name": "AllowVnetOutBound",
+                        "properties": 
+                        {
+                            "access": "Allow",
+                            "description": "Allow outbound traffic from all VMs to all VMs in VNET",
+                            "destinationAddressPrefix": "VirtualNetwork",
+                            "destinationPortRange": "*",
+                            "direction": "Outbound",
+                            "priority": 65000,
+                            "protocol": "*",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "sourcePortRange": "*"
+                        }
+                    },
+                    {
+                        "name": "AllowInternetOutBound",
+                        "properties": 
+                        {
+                            "access": "Allow",
+                            "description": "Allow outbound traffic from all VMs to Internet",
+                            "destinationAddressPrefix": "Internet",
+                            "destinationPortRange": "*",
+                            "direction": "Outbound",
+                            "priority": 65001,
+                            "protocol": "*",
+                            "sourceAddressPrefix": "*",
+                            "sourcePortRange": "*"
+                        }
+                    },
+                    {
+                        "name": "DenyAllOutBound",
+                        "properties": 
+                        {
+                            "access": "Deny",
+                            "description": "Deny all outbound traffic",
+                            "destinationAddressPrefix": "*",
+                            "destinationPortRange": "*",
+                            "direction": "Outbound",
+                            "priority": 65500,
+                            "protocol": "*",
+                            "sourceAddressPrefix": "*",
+                            "sourcePortRange": "*"
+                        }
+                    }
+                ],
+                "securityRules":
+                [
+                    {
+                        "name": "RDP_3389-Inbound",
+                        "properties":
+                        {
+                            "access": "Allow",
+                            "description": "Allow RDP Connections",
+                            "destinationAddressPrefix": "*",
+                            "destinationPortRange": "3389",
+                            "direction": "Inbound",
+                            "priority": 100,
+                            "protocol": "*",
+                            "sourceAddressPrefix": "*",
+                            "sourcePortRange": "*"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "comments": "Availability Set",
+            "condition": "[ equals( parameters( 'Availability Set' ), 'true' ) ]",
+            "type": "Microsoft.Compute/availabilitySets",
+            "apiVersion": "2017-03-30",
+            "name": "[ concat( parameters( 'Company Prefix' ), '-AS' ) ]",
+            "location": "[ resourceGroup().location ]",
+            "properties": 
+            {
+                "platformFaultDomainCount": 3,
+                "platformUpdateDomainCount": 5
+            },
+            "dependsOn": [ ]
+        },
+        {
+            "comments": "Domain Controller 1",
+            "condition": "[ greater( parameters( 'Number of Domain Controllers' ), 0 ) ]",
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2018-04-01",
+            "name": "[ if( greater( length( parameters( 'Custom Domain Controller Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom Domain Controller Names' )[ 0 ] ), concat( parameters( 'Company Prefix' ), '-DC-01' ) ) ]",
+            "location": "[ resourceGroup().location ]",
+            "properties":
+            {
+                "availabilitySet":
+                {
+                    "id": "[ resourceId( 'Microsoft.Compute/availabilitySets', concat( parameters( 'Company Prefix' ), '-AS' ) ) ]"
+                },
+                "diagnosticsProfile":
+                {
+                    "bootDiagnostics":
+                    {
+                        "enabled":true,
+                        "storageUri": "[ concat( 'https://', variables( 'DiagnosticStorageAccountName' ), '.blob.core.windows.net/' ) ]"
+                    }
+                },
+                "hardwareProfile":
+                {
+                    "vmSize": "[ parameters( 'Domain Controller VM Size' ) ]"
+                },
+                "networkProfile":
+                {
+                    "networkInterfaces":
+                    [
+                        {
+                            "id": "[ resourceId( 'Microsoft.Network/networkInterfaces', concat( if( greater( length( parameters( 'Custom Domain Controller Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom Domain Controller Names' )[ 0 ], '-NIC' ), concat( parameters( 'Company Prefix' ), '-DC-01-NIC' ) ) ) ) ]"
+                        }
+                    ]
+                },
+                "osProfile":
+                {
+                    "adminPassword": "[ parameters( 'Local Admin Password' ) ]",
+                    "adminUsername": "zadmin",
+                    "computerName": "[ if( greater( length( parameters( 'Custom Domain Controller Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom Domain Controller Names' )[ 0 ] ), concat( parameters( 'Company Prefix' ), '-DC-01' ) ) ]",
+                    "windowsConfiguration":
+                    {
+                        "enableAutomaticUpdates": true,
+                        "provisionVMAgent": true,
+                        "timeZone": "GMT Standard Time"
+                    }
+                },
+                "storageProfile":
+                {
+                    "imageReference":
+                    {
+                        "offer": "WindowsServer",
+                        "publisher": "MicrosoftWindowsServer",
+                        "sku": "[ parameters( 'Domain Controller OS Version' ) ]",
+                        "version": "latest"
+                    },
+                    "osDisk":
+                    {
+                        "name": "[ if( greater( length( parameters( 'Custom Domain Controller Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom Domain Controller Names' )[ 0 ], '-osDisk' ), concat( parameters( 'Company Prefix' ), '-DC-01-osDisk' ) ) ]",
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage",
+                        "diskSizeGB": "127",
+                        "managedDisk":
+                        {
+                            "storageAccountType": "[ parameters( 'Domain Controller VM Type' ) ]"
+                        },
+                        "osType": "Windows"
+                    },
+                    "dataDisks": 
+                    "[ if( equals( parameters( 'Number of Domain Controller Extra Data Disks' ), 0 ), json( 'null' ), variables( 'DomainControllerDataDisks' ) ) ]" 
+                }
+            },
+            "dependsOn": 
+            [
+                "DomainControllerNICLoop",
+                "[ variables( 'DiagnosticStorageAccountName' ) ]"
+            ]
+        },
+        {
+            "comments": "Extra Domain Controllers",
+            "condition": "[ greater( parameters( 'Number of Domain Controllers' ), 1 ) ]",
+            "copy": 
+            {
+                "name": "DomainControllersLoop",
+                "count": "[ parameters( 'Number of Domain Controllers' ) ]"
+            },
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2018-04-01",
+            "name": "[ if( greater( length( parameters( 'Custom Domain Controller Names' ) ), 1 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom Domain Controller Names' )[ copyIndex( 1 ) ] ), concat( parameters( 'Company Prefix' ), '-DC-0', add( copyIndex(), 2 ) ) ) ]",
+            "location":"[ resourceGroup().location ]",
+            "properties":
+            {
+                "availabilitySet":
+                {
+                    "id": "[ resourceId( 'Microsoft.Compute/availabilitySets', concat( parameters( 'Company Prefix' ), '-AS' ) ) ]"
+                },
+                "diagnosticsProfile":
+                {
+                    "bootDiagnostics":
+                    {
+                        "enabled":true,
+                        "storageUri": "[ concat( 'https://', variables( 'DiagnosticStorageAccountName' ), '.blob.core.windows.net/' ) ]"
+                    }
+                },
+                "hardwareProfile":
+                {
+                    "vmSize": "[ parameters( 'Domain Controller VM Size' ) ]"
+                },
+                "networkProfile":
+                {
+                    "networkInterfaces":
+                    [
+                        {
+                            "id": "[ resourceId( 'Microsoft.Network/networkInterfaces', concat( if( greater( length( parameters( 'Custom Domain Controller Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom Domain Controller Names' )[ copyIndex( 1 ) ], '-NIC' ), concat( parameters( 'Company Prefix' ), '-DC-0', add( copyIndex(), 2 ), '-NIC' ) ) ) ) ]"
+                        }
+                    ]
+                },
+                "osProfile":
+                {
+                    "adminPassword": "[ parameters( 'Local Admin Password' ) ]",
+                    "adminUsername": "zadmin",
+                    "computerName": "[ if( greater( length( parameters( 'Custom Domain Controller Names' ) ), 1 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom Domain Controller Names' )[ copyIndex( 1 ) ] ), concat( parameters( 'Company Prefix' ), '-DC-0', add( copyIndex(), 2 ) ) ) ]",
+                    "windowsConfiguration":
+                    {
+                        "enableAutomaticUpdates": true,
+                        "provisionVMAgent": true,
+                        "timeZone": "GMT Standard Time"
+                    }
+                },
+                "storageProfile":
+                {
+                    "imageReference":
+                    {
+                        "offer": "WindowsServer",
+                        "publisher": "MicrosoftWindowsServer",
+                        "sku": "[ parameters( 'Domain Controller OS Version' ) ]",
+                        "version": "latest"
+                    },
+                    "osDisk":
+                    {
+                        "name": "[ if( greater( length( parameters( 'Custom Domain Controller Names' ) ), 1 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom Domain Controller Names' )[ copyIndex( 1 ) ], '-osDisk' ), concat( parameters( 'Company Prefix' ), '-DC-0', add( copyIndex(), 2 ), '-osDisk' ) ) ]",
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage",
+                        "diskSizeGB": "127",
+                        "managedDisk":
+                        {
+                            "storageAccountType": "[ parameters( 'Domain Controller VM Type' ) ]"
+                        },
+                        "osType": "Windows"
+                    }
+                }
+            },
+            "dependsOn": 
+            [
+                "DomainControllerNICLoop",
+                "[ variables( 'DiagnosticStorageAccountName' ) ]"
+            ]
+        },
+        {
+            "comments": "RDS Server 1",
+            "condition": "[ greater( parameters( 'Number of RDS Servers' ), 0 ) ]",
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2018-04-01",
+            "name": "[ if( greater( length( parameters( 'Custom RDS Server Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom RDS Server Names' )[ 0 ] ), concat( parameters( 'Company Prefix' ), '-RDS-01' ) ) ]",
+            "location":"[ resourceGroup().location ]",
+            "properties":
+            {
+                "diagnosticsProfile":
+                {
+                    "bootDiagnostics":
+                    {
+                        "enabled":true,
+                        "storageUri": "[ concat( 'https://', variables( 'DiagnosticStorageAccountName' ), '.blob.core.windows.net/' ) ]"
+                    }
+                },
+                "hardwareProfile":
+                {
+                    "vmSize": "[ parameters( 'RDS Server VM Size' ) ]"
+                },
+                "networkProfile":
+                {
+                    "networkInterfaces":
+                    [
+                        {
+                            "id": "[ resourceId( 'Microsoft.Network/networkInterfaces', concat( if( greater( length( parameters( 'Custom RDS Server Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom RDS Server Names' )[ 0 ], '-NIC' ), concat( parameters( 'Company Prefix' ), '-RDS-01-NIC' ) ) ) ) ]"
+                        }
+                    ]
+                },
+                "osProfile":
+                {
+                    "adminPassword": "[ parameters( 'Local Admin Password' ) ]",
+                    "adminUsername": "zadmin",
+                    "computerName": "[ if( greater( length( parameters( 'Custom RDS Server Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom RDS Server Names' )[ 0 ] ), concat( parameters( 'Company Prefix' ), '-RDS-01' ) ) ]",
+                    "windowsConfiguration":
+                    {
+                        "enableAutomaticUpdates": true,
+                        "provisionVMAgent": true,
+                        "timeZone": "GMT Standard Time"
+                    }
+                },
+                "storageProfile":
+                {
+                    "imageReference":
+                    {
+                        "offer": "WindowsServer",
+                        "publisher": "MicrosoftWindowsServer",
+                        "sku": "[ parameters( 'RDS Server OS Version' ) ]",
+                        "version": "latest"
+                    },
+                    "osDisk":
+                    {
+                        "name": "[ if( greater( length( parameters( 'Custom RDS Server Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom RDS Server Names' )[ 0 ], '-osDisk' ), concat( parameters( 'Company Prefix' ), '-RDS-01-osDisk' ) ) ]",
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage",
+                        "diskSizeGB": "127",
+                        "managedDisk":
+                        {
+                            "storageAccountType": "[ parameters( 'RDS Server VM Type' ) ]"
+                        },
+                        "osType": "Windows"
+                    },
+                    "dataDisks": 
+                    "[ if( equals( parameters( 'Number of RDS Server Extra Data Disks' ), 0 ), json( 'null' ), variables( 'RDSServerDataDisks' ) ) ]" 
+                }
+            },
+            "dependsOn": 
+            [
+                "RDSServerNICLoop",
+                "[ variables( 'DiagnosticStorageAccountName' ) ]"
+            ]
+        },
+        {
+            "comments": "Extra RDS Servers",
+            "condition": "[ greater( parameters( 'Number of RDS Servers' ), 1 ) ]",
+            "copy": 
+            {
+                "name": "RDSServersLoop",
+                "count": "[ parameters( 'Number of RDS Servers' ) ]"
+            },
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2018-04-01",
+            "name": "[ if( greater( length( parameters( 'Custom RDS Server Names' ) ), 1 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom RDS Server Names' )[ copyIndex( 1 ) ] ), concat( parameters( 'Company Prefix' ), '-RDS-0', add( copyIndex(), 2 ) ) ) ]",
+            "location":"[ resourceGroup().location ]",
+            "properties":
+            {
+                "diagnosticsProfile":
+                {
+                    "bootDiagnostics":
+                    {
+                        "enabled":true,
+                        "storageUri": "[ concat( 'https://', variables( 'DiagnosticStorageAccountName' ), '.blob.core.windows.net/' ) ]"
+                    }
+                },
+                "hardwareProfile":
+                {
+                    "vmSize": "[ parameters( 'RDS Server VM Size' ) ]"
+                },
+                "networkProfile":
+                {
+                    "networkInterfaces":
+                    [
+                        {
+                            "id": "[ resourceId( 'Microsoft.Network/networkInterfaces', concat( if( greater( length( parameters( 'Custom RDS Server Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom RDS Server Names' )[ copyIndex( 1 ) ], '-NIC' ), concat( parameters( 'Company Prefix' ), '-RDS-0', add( copyIndex(), 2 ), '-NIC' ) ) ) ) ]"
+                        }
+                    ]
+                },
+                "osProfile":
+                {
+                    "adminPassword": "[ parameters( 'Local Admin Password' ) ]",
+                    "adminUsername": "zadmin",
+                    "computerName": "[ if( greater( length( parameters( 'Custom RDS Server Names' ) ), 1 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom RDS Server Names' )[ copyIndex( 1 ) ] ), concat( parameters( 'Company Prefix' ), '-RDS-0', add( copyIndex(), 2 ) ) ) ]",
+                    "windowsConfiguration":
+                    {
+                        "enableAutomaticUpdates": true,
+                        "provisionVMAgent": true,
+                        "timeZone": "GMT Standard Time"
+                    }
+                },
+                "storageProfile":
+                {
+                    "imageReference":
+                    {
+                        "offer": "WindowsServer",
+                        "publisher": "MicrosoftWindowsServer",
+                        "sku": "[ parameters( 'RDS Server OS Version' ) ]",
+                        "version": "latest"
+                    },
+                    "osDisk":
+                    {
+                        "name": "[ if( greater( length( parameters( 'Custom RDS Server Names' ) ), 1 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom RDS Server Names' )[ copyIndex( 1 ) ], '-osDisk' ), concat( parameters( 'Company Prefix' ), '-RDS-0', copyIndex( 1 ), '-osDisk' ) ) ]",
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage",
+                        "diskSizeGB": "127",
+                        "managedDisk":
+                        {
+                            "storageAccountType": "[ parameters( 'RDS Server VM Type' ) ]"
+                        },
+                        "osType": "Windows"
+                    }
+                }
+            },
+            "dependsOn": 
+            [
+                "RDSServerNICLoop",
+                "[ variables( 'DiagnosticStorageAccountName' ) ]"
+            ]
+        },
+        {
+            "comments": "File Server 1",
+            "condition": "[ greater( parameters( 'Number of File Servers' ), 0 ) ]",
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2018-04-01",
+            "name": "[ if( greater( length( parameters( 'Custom File Server Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom File Server Names' )[ 0 ] ), concat( parameters( 'Company Prefix' ), '-FS-01' ) ) ]",
+            "location":"[ resourceGroup().location ]",
+            "properties":
+            {
+                "diagnosticsProfile":
+                {
+                    "bootDiagnostics":
+                    {
+                        "enabled":true,
+                        "storageUri": "[ concat( 'https://', variables( 'DiagnosticStorageAccountName' ), '.blob.core.windows.net/' ) ]"
+                    }
+                },
+                "hardwareProfile":
+                {
+                    "vmSize": "[ parameters( 'File Server VM Size' ) ]"
+                },
+                "networkProfile":
+                {
+                    "networkInterfaces":
+                    [
+                        {
+                            "id": "[ resourceId( 'Microsoft.Network/networkInterfaces', concat( if( greater( length( parameters( 'Custom File Server Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom File Server Names' )[ 0 ], '-NIC' ), concat( parameters( 'Company Prefix' ), '-FS-01-NIC' ) ) ) ) ]"
+                        }
+                    ]
+                },
+                "osProfile":
+                {
+                    "adminPassword": "[ parameters( 'Local Admin Password' ) ]",
+                    "adminUsername": "zadmin",
+                    "computerName": "[ if( greater( length( parameters( 'Custom File Server Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom File Server Names' )[ 0 ] ), concat( parameters( 'Company Prefix' ), '-FS-01' ) ) ]",
+                    "windowsConfiguration":
+                    {
+                        "enableAutomaticUpdates": true,
+                        "provisionVMAgent": true,
+                        "timeZone": "GMT Standard Time"
+                    }
+                },
+                "storageProfile":
+                {
+                    "imageReference":
+                    {
+                        "offer": "WindowsServer",
+                        "publisher": "MicrosoftWindowsServer",
+                        "sku": "[ parameters( 'File Server OS Version' ) ]",
+                        "version": "latest"
+                    },
+                    "osDisk":
+                    {
+                        "name": "[ if( greater( length( parameters( 'Custom File Server Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom File Server Names' )[ 0 ], '-osDisk' ), concat( parameters( 'Company Prefix' ), '-FS-01-osDisk' ) ) ]",
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage",
+                        "diskSizeGB": "127",
+                        "managedDisk":
+                        {
+                            "storageAccountType": "[ parameters( 'File Server VM Type' ) ]"
+                        },
+                        "osType": "Windows"
+                    },
+                    "dataDisks": 
+                    "[ if( equals( parameters( 'Number of FIle Server Extra Data Disks' ), 0 ), json( 'null' ), variables( 'FileServerDataDisks' ) ) ]" 
+                }
+            },
+            "dependsOn": 
+            [
+                "FileServerNICLoop",
+                "[ variables( 'DiagnosticStorageAccountName' ) ]"
+            ]
+        },
+        {
+            "comments": "Extra File Servers",
+            "condition": "[ greater( parameters( 'Number of File Servers' ), 1 ) ]",
+            "copy": 
+            {
+                "name": "FileServersLoop",
+                "count": "[ parameters( 'Number of File Servers' ) ]"
+            },
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2018-04-01",
+            "name": "[ if( greater( length( parameters( 'Custom File Server Names' ) ), 1 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom File Server Names' )[ copyIndex( 1 ) ] ), concat( parameters( 'Company Prefix' ), '-FS-0', add( copyIndex(), 2 ) ) ) ]",
+            "location":"[ resourceGroup().location ]",
+            "properties":
+            {
+                "diagnosticsProfile":
+                {
+                    "bootDiagnostics":
+                    {
+                        "enabled":true,
+                        "storageUri": "[ concat( 'https://', variables( 'DiagnosticStorageAccountName' ), '.blob.core.windows.net/' ) ]"
+                    }
+                },
+                "hardwareProfile":
+                {
+                    "vmSize": "[ parameters( 'File Server VM Size' ) ]"
+                },
+                "networkProfile":
+                {
+                    "networkInterfaces":
+                    [
+                        {
+                            "id": "[ resourceId( 'Microsoft.Network/networkInterfaces', concat( if( greater( length( parameters( 'Custom File Server Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom File Server Names' )[ copyIndex( 1 ) ], '-NIC' ), concat( parameters( 'Company Prefix' ), '-FS-0', add( copyIndex(), 2 ), '-NIC' ) ) ) ) ]"
+                        }
+                    ]
+                },
+                "osProfile":
+                {
+                    "adminPassword": "[ parameters( 'Local Admin Password' ) ]",
+                    "adminUsername": "zadmin",
+                    "computerName": "[ if( greater( length( parameters( 'Custom File Server Names' ) ), 1 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom File Server Names' )[ copyIndex( 1 ) ] ), concat( parameters( 'Company Prefix' ), '-FS-0', add( copyIndex(), 2 ) ) ) ]",
+                    "windowsConfiguration":
+                    {
+                        "enableAutomaticUpdates": true,
+                        "provisionVMAgent": true,
+                        "timeZone": "GMT Standard Time"
+                    }
+                },
+                "storageProfile":
+                {
+                    "imageReference":
+                    {
+                        "offer": "WindowsServer",
+                        "publisher": "MicrosoftWindowsServer",
+                        "sku": "[ parameters( 'File Server OS Version' ) ]",
+                        "version": "latest"
+                    },
+                    "osDisk":
+                    {
+                        "name": "[ if( greater( length( parameters( 'Custom File Server Names' ) ), 1 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom File Server Names' )[ copyIndex( 1 ) ], '-osDisk' ), concat( parameters( 'Company Prefix' ), '-FS-0', copyIndex( 1 ), '-osDisk' ) ) ]",
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage",
+                        "diskSizeGB": "127",
+                        "managedDisk":
+                        {
+                            "storageAccountType": "[ parameters( 'File Server VM Type' ) ]"
+                        },
+                        "osType": "Windows"
+                    }
+                }
+            },
+            "dependsOn": 
+            [
+                "FileServerNICLoop",
+                "[ variables( 'DiagnosticStorageAccountName' ) ]"
+            ]
+        },
+        {
+            "comments": "SQL Server 1",
+            "condition": "[ greater( parameters( 'Number of SQL Servers' ), 0 ) ]",
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2018-04-01",
+            "name": "[ if( greater( length( parameters( 'Custom SQL Server Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom SQL Server Names' )[ 0 ] ), concat( parameters( 'Company Prefix' ), '-SQL-01' ) ) ]",
+            "location":"[ resourceGroup().location ]",
+            "properties":
+            {
+                "diagnosticsProfile":
+                {
+                    "bootDiagnostics":
+                    {
+                        "enabled":true,
+                        "storageUri": "[ concat( 'https://', variables( 'DiagnosticStorageAccountName' ), '.blob.core.windows.net/' ) ]"
+                    }
+                },
+                "hardwareProfile":
+                {
+                    "vmSize": "[ parameters( 'SQL Server VM Size' ) ]"
+                },
+                "networkProfile":
+                {
+                    "networkInterfaces":
+                    [
+                        {
+                            "id": "[ resourceId( 'Microsoft.Network/networkInterfaces', concat( if( greater( length( parameters( 'Custom SQL Server Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom SQL Server Names' )[ 0 ], '-NIC' ), concat( parameters( 'Company Prefix' ), '-SQL-01-NIC' ) ) ) ) ]"
+                        }
+                    ]
+                },
+                "osProfile":
+                {
+                    "adminPassword": "[ parameters( 'Local Admin Password' ) ]",
+                    "adminUsername": "zadmin",
+                    "computerName": "[ if( greater( length( parameters( 'Custom SQL Server Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom SQL Server Names' )[ 0 ] ), concat( parameters( 'Company Prefix' ), '-SQL-01' ) ) ]",
+                    "windowsConfiguration":
+                    {
+                        "enableAutomaticUpdates": true,
+                        "provisionVMAgent": true,
+                        "timeZone": "GMT Standard Time"
+                    }
+                },
+                "storageProfile":
+                {
+                    "imageReference":
+                    {
+                        "offer": "WindowsServer",
+                        "publisher": "MicrosoftWindowsServer",
+                        "sku": "[ parameters( 'SQL Server OS Version' ) ]",
+                        "version": "latest"
+                    },
+                    "osDisk":
+                    {
+                        "name": "[ if( greater( length( parameters( 'Custom SQL Server Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom SQL Server Names' )[ 0 ], '-osDisk' ), concat( parameters( 'Company Prefix' ), '-SQL-01-osDisk' ) ) ]",
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage",
+                        "diskSizeGB": "127",
+                        "managedDisk":
+                        {
+                            "storageAccountType": "[ parameters( 'SQL Server VM Type' ) ]"
+                        },
+                        "osType": "Windows"
+                    },
+                    "dataDisks": 
+                    "[ if( equals( parameters( 'Number of SQL Server Extra Data Disks' ), 0 ), json( 'null' ), variables( 'SQLServerDataDisks' ) ) ]" 
+                }
+            },
+            "dependsOn": 
+            [
+                "SQLServerNICLoop",
+                "[ variables( 'DiagnosticStorageAccountName' ) ]"
+            ]
+        },
+        {
+            "comments": "Extra SQL Servers",
+            "condition": "[ greater( parameters( 'Number of SQL Servers' ), 1 ) ]",
+            "copy": 
+            {
+                "name": "SQLServersLoop",
+                "count": "[ parameters( 'Number of SQL Servers' ) ]"
+            },
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2018-04-01",
+            "name": "[ if( greater( length( parameters( 'Custom SQL Server Names' ) ), 1 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom SQL Server Names' )[ copyIndex( 1 ) ] ), concat( parameters( 'Company Prefix' ), '-SQL-0', add( copyIndex(), 2 ) ) ) ]",
+            "location":"[ resourceGroup().location ]",
+            "properties":
+            {
+                "diagnosticsProfile":
+                {
+                    "bootDiagnostics":
+                    {
+                        "enabled":true,
+                        "storageUri": "[ concat( 'https://', variables( 'DiagnosticStorageAccountName' ), '.blob.core.windows.net/' ) ]"
+                    }
+                },
+                "hardwareProfile":
+                {
+                    "vmSize": "[ parameters( 'SQL Server VM Size' ) ]"
+                },
+                "networkProfile":
+                {
+                    "networkInterfaces":
+                    [
+                        {
+                            "id": "[ resourceId( 'Microsoft.Network/networkInterfaces', concat( if( greater( length( parameters( 'Custom SQL Server Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom SQL Server Names' )[ copyIndex( 1 ) ], '-NIC' ), concat( parameters( 'Company Prefix' ), '-SQL-0', add( copyIndex(), 2 ), '-NIC' ) ) ) ) ]"
+                        }
+                    ]
+                },
+                "osProfile":
+                {
+                    "adminPassword": "[ parameters( 'Local Admin Password' ) ]",
+                    "adminUsername": "zadmin",
+                    "computerName": "[ if( greater( length( parameters( 'Custom SQL Server Names' ) ), 1 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom SQL Server Names' )[ copyIndex( 1 ) ] ), concat( parameters( 'Company Prefix' ), '-SQL-0', add( copyIndex(), 2 ) ) ) ]",
+                    "windowsConfiguration":
+                    {
+                        "enableAutomaticUpdates": true,
+                        "provisionVMAgent": true,
+                        "timeZone": "GMT Standard Time"
+                    }
+                },
+                "storageProfile":
+                {
+                    "imageReference":
+                    {
+                        "offer": "WindowsServer",
+                        "publisher": "MicrosoftWindowsServer",
+                        "sku": "[ parameters( 'SQL Server OS Version' ) ]",
+                        "version": "latest"
+                    },
+                    "osDisk":
+                    {
+                        "name": "[ if( greater( length( parameters( 'Custom SQL Server Names' ) ), 1 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom SQL Server Names' )[ copyIndex( 1 ) ], '-osDisk' ), concat( parameters( 'Company Prefix' ), '-SQL-0', copyIndex( 1 ), '-osDisk' ) ) ]",
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage",
+                        "diskSizeGB": "127",
+                        "managedDisk":
+                        {
+                            "storageAccountType": "[ parameters( 'SQL Server VM Type' ) ]"
+                        },
+                        "osType": "Windows"
+                    }
+                }
+            },
+            "dependsOn": 
+            [
+                "SQLServerNICLoop",
+                "[ variables( 'DiagnosticStorageAccountName' ) ]"
+            ]
+        },
+        {
+            "comments": "Domain Controller NICs",
+            "copy": 
+            {
+                "name": "DomainControllerNICLoop",
+                "count": "[ parameters( 'Number of Domain Controllers' ) ]"
+            },
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2018-08-01",
+            "name": "[ if( greater( length( parameters( 'Custom Domain Controller Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom Domain Controller Names' )[ copyIndex() ], '-NIC' ), concat( parameters( 'Company Prefix' ), '-DC-0', add( copyIndex(), 1 ), '-NIC' ) ) ]",
+            "location": "[ resourceGroup().location ]",
+            "properties": 
+            {
+                "ipConfigurations":
+                [
+                    {
+                        "name": "ipconfig1",
+                        "properties": 
+                        {
+                            "primary": true,
+                            "privateIPAddress": "[ concat( '10.1.1.', add( copyIndex(), 4 ) ) ]",
+                            "privateIPAddressVersion": "IPv4",
+                            "privateIPAllocationMethod": "Static",
+                            "publicIPAddress":
+                            {
+                                "id": "[ resourceId( 'Microsoft.Network/publicIPAddresses', if( greater( length( parameters( 'Custom Domain Controller Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom Domain Controller Names' )[ copyIndex() ], '-PIP' ), concat( parameters( 'Company Prefix' ), '-DC-0', add( copyIndex(), 1 ), '-PIP' ) ) ) ]"
+                            },
+                            "subnet":
+                            {
+                                "id": "[ resourceId( 'Microsoft.Network/virtualNetworks/subnets', variables( 'VirtualNetworkName' ), variables( 'VirtualNetworkSubnetName' ) ) ]"
+                            }
+                        }
+                    }
+                ],
+                "primary": true
+            },
+            "dependsOn": 
+            [
+                "[ variables( 'VirtualNetworkName' ) ]",
+                "[ if( greater( length( parameters( 'Custom Domain Controller Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom Domain Controller Names' )[ copyIndex() ], '-PIP' ), concat( parameters( 'Company Prefix' ), '-DC-0', add( copyIndex(), 1 ), '-PIP' ) ) ]"
+            ]
+        },
+        {
+            "comments": "RDS Server NICs",
+            "copy": 
+            {
+                "name": "RDSServerNICLoop",
+                "count": "[ parameters( 'Number of RDS Servers' ) ]"
+            },
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2018-08-01",
+            "name": "[ if( greater( length( parameters( 'Custom RDS Server Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom RDS Server Names' )[ copyIndex() ], '-NIC' ), concat( parameters( 'Company Prefix' ), '-RDS-0', add( copyIndex(), 1 ), '-NIC' ) ) ]",
+            "location": "[ resourceGroup().location ]",
+            "properties": 
+            {
+                "ipConfigurations":
+                [
+                    {
+                        "name": "ipconfig1",
+                        "properties": 
+                        {
+                            "primary": true,
+                            "privateIPAddress": "[ concat( '10.1.1.', add( add( copyIndex(), 4 ), parameters( 'Number of Domain Controllers' ) ) ) ]",
+                            "privateIPAddressVersion": "IPv4",
+                            "privateIPAllocationMethod": "Static",
+                            "publicIPAddress":
+                            {
+                                "id": "[ resourceId( 'Microsoft.Network/publicIPAddresses', if( greater( length( parameters( 'Custom RDS Server Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom RDS Server Names' )[ copyIndex() ], '-PIP' ), concat( parameters( 'Company Prefix' ), '-RDS-0', add( copyIndex(), 1 ), '-PIP' ) ) ) ]"
+                            },
+                            "subnet":
+                            {
+                                "id": "[ resourceId( 'Microsoft.Network/virtualNetworks/subnets', variables( 'VirtualNetworkName' ), variables( 'VirtualNetworkSubnetName' ) ) ]"
+                            }
+                        }
+                    }
+                ],
+                "primary": true
+            },
+            "dependsOn": 
+            [
+                "[ variables( 'VirtualNetworkName' ) ]",
+                "[ if( greater( length( parameters( 'Custom RDS Server Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom RDS Server Names' )[ copyIndex() ], '-PIP' ), concat( parameters( 'Company Prefix' ), '-RDS-0', add( copyIndex(), 1 ), '-PIP' ) ) ]"
+            ]
+        },
+        {
+            "comments": "File Server NICs",
+            "copy": 
+            {
+                "name": "FileServerNICLoop",
+                "count": "[ parameters( 'Number of File Servers' ) ]"
+            },
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2018-08-01",
+            "name": "[ if( greater( length( parameters( 'Custom File Server Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom File Server Names' )[ copyIndex() ], '-NIC' ), concat( parameters( 'Company Prefix' ), '-FS-0', add( copyIndex(), 1 ), '-NIC' ) ) ]",
+            "location": "[ resourceGroup().location ]",
+            "properties": 
+            {
+                "ipConfigurations":
+                [
+                    {
+                        "name": "ipconfig1",
+                        "properties": 
+                        {
+                            "primary": true,
+                            "privateIPAddress": "[ concat( '10.1.1.', add( add( add( copyIndex(), 4 ), parameters( 'Number of Domain Controllers' ) ), parameters( 'Number of RDS Servers' ) ) ) ]",
+                            "privateIPAddressVersion": "IPv4",
+                            "privateIPAllocationMethod": "Static",
+                            "publicIPAddress":
+                            {
+                                "id": "[ resourceId( 'Microsoft.Network/publicIPAddresses', if( greater( length( parameters( 'Custom File Server Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom File Server Names' )[ copyIndex() ], '-PIP' ), concat( parameters( 'Company Prefix' ), '-FS-0', add( copyIndex(), 1 ), '-PIP' ) ) ) ]"
+                            },
+                            "subnet":
+                            {
+                                "id": "[ resourceId( 'Microsoft.Network/virtualNetworks/subnets', variables( 'VirtualNetworkName' ), variables( 'VirtualNetworkSubnetName' ) ) ]"
+                            }
+                        }
+                    }
+                ],
+                "primary": true
+            },
+            "dependsOn": 
+            [
+                "[ variables( 'VirtualNetworkName' ) ]",
+                "[ if( greater( length( parameters( 'Custom File Server Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom File Server Names' )[ copyIndex() ], '-PIP' ), concat( parameters( 'Company Prefix' ), '-FS-0', add( copyIndex(), 1 ), '-PIP' ) ) ]"
+            ]
+        },
+        {
+            "comments": "SQL Server NICs",
+            "copy": 
+            {
+                "name": "SQLServerNICLoop",
+                "count": "[ parameters( 'Number of SQL Servers' ) ]"
+            },
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2018-08-01",
+            "name": "[ if( greater( length( parameters( 'Custom SQL Server Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom SQL Server Names' )[ copyIndex() ], '-NIC' ), concat( parameters( 'Company Prefix' ), '-SQL-0', add( copyIndex(), 1 ), '-NIC' ) ) ]",
+            "location": "[ resourceGroup().location ]",
+            "properties": 
+            {
+                "ipConfigurations":
+                [
+                    {
+                        "name": "ipconfig1",
+                        "properties": 
+                        {
+                            "primary": true,
+                            "privateIPAddress": "[ concat( '10.1.1.', add( add( add( add( copyIndex(), 4 ), parameters( 'Number of Domain Controllers' ) ), parameters( 'Number of RDS Servers' ) ), parameters( 'Number of File Servers' ) ) ) ]",
+                            "privateIPAddressVersion": "IPv4",
+                            "privateIPAllocationMethod": "Static",
+                            "publicIPAddress":
+                            {
+                                "id": "[ resourceId( 'Microsoft.Network/publicIPAddresses', if( greater( length( parameters( 'Custom SQL Server Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom SQL Server Names' )[ copyIndex() ], '-PIP' ), concat( parameters( 'Company Prefix' ), '-SQL-0', add( copyIndex(), 1 ), '-PIP' ) ) ) ]"
+                            },
+                            "subnet":
+                            {
+                                "id": "[ resourceId( 'Microsoft.Network/virtualNetworks/subnets', variables( 'VirtualNetworkName' ), variables( 'VirtualNetworkSubnetName' ) ) ]"
+                            }
+                        }
+                    }
+                ],
+                "primary": true
+            },
+            "dependsOn": 
+            [
+                "[ variables( 'VirtualNetworkName' ) ]",
+                "[ if( greater( length( parameters( 'Custom SQL Server Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom SQL Server Names' )[ copyIndex() ], '-PIP' ), concat( parameters( 'Company Prefix' ), '-SQL-0', add( copyIndex(), 1 ), '-PIP' ) ) ]"
+            ]
+        },
+        {
+            "comments": "Domain Controller PIPs",
+            "copy": 
+            {
+                "name": "DomainControllerPIPLoop",
+                "count": "[ parameters( 'Number of Domain Controllers' ) ]"
+            },
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2018-08-01",
+            "name": "[ if( greater( length( parameters( 'Custom Domain Controller Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom Domain Controller Names' )[ copyIndex() ], '-PIP' ), concat( parameters( 'Company Prefix' ), '-DC-0', add( copyIndex(), 1 ), '-PIP' ) ) ]",
+            "location": "[ resourceGroup().location ]",
+            "properties": 
+            {
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "Static"
+            },
+            "sku":
+            {
+                "name":"Basic"
+            },
+            "dependsOn": 
+            [ ]
+        },
+        {
+            "comments": "RDS Server PIPs",
+            "copy": 
+            {
+                "name": "RDSServerPIPLoop",
+                "count": "[ parameters( 'Number of RDS Servers' ) ]"
+            },
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2018-08-01",
+            "name": "[ if( greater( length( parameters( 'Custom RDS Server Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom RDS Server Names' )[ copyIndex() ], '-PIP' ), concat( parameters( 'Company Prefix' ), '-RDS-0', add( copyIndex(), 1 ), '-PIP' ) ) ]",
+            "location": "[ resourceGroup().location ]",
+            "properties": 
+            {
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "Static"
+            },
+            "sku":
+            {
+                "name":"Basic"
+            },
+            "dependsOn": 
+            [ ]
+        },
+        {
+            "comments": "File Server PIPs",
+            "copy": 
+            {
+                "name": "FileServerPIPLoop",
+                "count": "[ parameters( 'Number of File Servers' ) ]"
+            },
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2018-08-01",
+            "name": "[ if( greater( length( parameters( 'Custom File Server Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom File Server Names' )[ copyIndex() ], '-PIP' ), concat( parameters( 'Company Prefix' ), '-FS-0', add( copyIndex(), 1 ), '-PIP' ) ) ]",
+            "location": "[ resourceGroup().location ]",
+            "properties": 
+            {
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "Static"
+            },
+            "sku":
+            {
+                "name":"Basic"
+            },
+            "dependsOn": 
+            [ ]
+        },
+        {
+            "comments": "SQL Server PIPs",
+            "copy": 
+            {
+                "name": "SQLServerPIPLoop",
+                "count": "[ parameters( 'Number of SQL Servers' ) ]"
+            },
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2018-08-01",
+            "name": "[ if( greater( length( parameters( 'Custom SQL Server Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom SQL Server Names' )[ copyIndex() ], '-PIP' ), concat( parameters( 'Company Prefix' ), '-SQL-0', add( copyIndex(), 1 ), '-PIP' ) ) ]",
+            "location": "[ resourceGroup().location ]",
+            "properties": 
+            {
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "Static"
+            },
+            "sku":
+            {
+                "name":"Basic"
+            },
+            "dependsOn": 
+            [ ]
+        },
+        {
+            "comments": "Virtual Network Gateway PIP",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2018-08-01",
+            "name": "[ concat( variables( 'VirtualNetworkGatewayName' ), '-PIP' ) ]",
+            "location": "[ resourceGroup().location ]",
+            "properties": 
+            {
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "Dynamic"
+            },
+            "sku":
+            {
+                "name":"Basic"
+            },
+            "dependsOn": 
+            [ ]
+        }
+        
+    ]
+}
+
+
+
+
+
+
