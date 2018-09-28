@@ -53,5 +53,10 @@
 	],
 	"outputs":
 	{
+		"resourceName":
+		{
+			"type": "string",
+			"value": "[ reference( parameters( 'Diagnostic Storage Account Name' ) ).name ]"
+		}
 	}
 }

@@ -144,6 +144,11 @@
 		{
 			"type": "string",
 			"value": "[ resourceId( 'Microsoft.Network/networkSecurityGroups', parameters( 'Network Security Group Name' ) ) ]"
+		},
+		"resourceName":
+		{
+			"type": "string",
+			"value": "[ reference( parameters( 'Network Security Group Name' ) ).name ]"
 		}
 	}
 }
