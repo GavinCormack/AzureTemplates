@@ -98,10 +98,10 @@
 	],
 	"outputs":
 	{
-		"resourceName":
+		"resourceInfo":
 		{
-			"type": "string",
-			"value": "[ reference( parameters( 'Virtual Network Name' ) ).name ]"
+			"value": "[ reference( concat( 'Microsoft.Network/virtualNetworks/', parameters( 'Virtual Network Name' ) ), providers( 'Microsoft.Network', 'virtualNetworks' ).apiVersions[ 0 ] ) ]",
+			"type": "object"
 		}
 	}
 }
