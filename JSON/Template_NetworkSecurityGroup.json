@@ -3,7 +3,7 @@
 	"contentVersion": "1.0.0.0",
 	"parameters":
 	{
-		"Network Security Group Name":
+		"Virtual Network Subnet NSG Name":
 		{
 			"type": "string"
 		}
@@ -20,7 +20,7 @@
 						"comments": "Network Security Group for Subnet",
 						"type": "Microsoft.Network/networkSecurityGroups",
 						"apiVersion": "2018-08-01",
-						"name": "[ parameters( 'Network Security Group Name' ) ]",
+						"name": "[ parameters( 'Virtual Network Subnet NSG Name' ) ]",
 						"location": "[ resourceGroup().location ]",
 						"properties":
 						{
