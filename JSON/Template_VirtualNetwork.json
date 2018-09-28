@@ -74,30 +74,15 @@
 				"LinkedTemplate_NetworkSecurityGroup"
 			]
 		},
-		{
-			"comments": "Deployment of Network Security Group",
-			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "2017-05-10",
-			"name": "LinkedTemplate_NetworkSecurityGroup",
-			"properties":
-			{
-				"mode": "Incremental",
-				"templateLink":
-				{
-					"uri": "https://raw.githubusercontent.com/GavinCormack/AzureTemplates/master/JSON/Template_NetworkSecurityGroup.json"
-				},
-													"parameters":
-													{
-																																																					"Virtual Network Subnet NSG Name":
-																																																					{
-																																																						"value": "[ parameters( 'Virtual Network Subnet NSG Name' ) ]"
-																																																					}
-													}
-			}
-		}
+		
 	],
 	"outputs":
 	{
+		"resourceId":
+		{
+			"type": "string",
+			"value": "[ resourceId( 'Microsoft.Network/virtuaNetworks', parameters( 'Virtual Network Name' ) ) ]"
+		},
 		"resourceInfo":
 		{
 			"value": "[ reference( concat( 'Microsoft.Network/virtualNetworks/', parameters( 'Virtual Network Name' ) ), providers( 'Microsoft.Network', 'virtualNetworks' ).apiVersions[ 0 ] ) ]",

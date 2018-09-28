@@ -12,6 +12,20 @@
 			{
 				"description": "The Company Prefix that will be at the beginning of each resource in Azure. (Must be 8 or less characters in length)"
 			}
+		},
+		"Using Domain Services":
+		{
+			"type": "string",
+			"defaultValue": "true",
+			"allowedValues":
+			[
+				"true",
+				"false"
+			],
+			"metadata":
+			{
+				"description": "Do you wnat to use an Azure Managed Domain and allow user to log in with their email addresses?"
+			}
 		}
 	},
 	"variables":
@@ -41,7 +55,32 @@
 				},
 				"parameters":
 				{
-					"Diagnostic Storage Account Name":	{ "value": "[ variables( 'DiagnosticStorageAccountName' ) ]" }
+					"Diagnostic Storage Account Name":
+					{
+						"value": "[ variables( 'DiagnosticStorageAccountName' ) ]"
+					}
+				}
+			}
+		},
+		{
+			"condition": "[ equals( parameters( 'Using Domain Services' ), 'true' ) ]",
+			"comments": "Deployment of Network Security Group",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2017-05-10",
+			"name": "LinkedTemplate_NetworkSecurityGroup",
+			"properties":
+			{
+				"mode": "Incremental",
+				"templateLink":
+				{
+					"uri": "https://raw.githubusercontent.com/GavinCormack/AzureTemplates/master/JSON/Template_NetworkSecurityGroup.json"
+				},
+				"parameters":
+				{
+					"Virtual Network Subnet NSG Name":
+					{
+						"value": "[ variables( 'VirtualNetworkName' ) ]"
+					}
 				}
 			}
 		},
@@ -59,16 +98,38 @@
 				},
 				"parameters":
 				{
-					"Virtual Network Name":				{ "value": "[ variables( 'VirtualNetworkName' ) ]" },
-					"Virtual Network Subnet Name":		{ "value": "[ variables( 'VirtualNetworkSubnetName' ) ]" },
-					"Virtual Network Subnet NSG Name":	{ "value": "[ variables( 'VirtualNetworkSubnetNSGName' ) ]" }
+					"Virtual Network Name":
+					{
+						"value": "[ variables( 'VirtualNetworkName' ) ]"
+					},
+					"Virtual Network Subnet Name":
+					{
+						"value": "[ variables( 'VirtualNetworkSubnetName' ) ]"
+					},
+					"Virtual Network Subnet NSG Name":
+					{
+						"value": "[ variables( 'VirtualNetworkSubnetNSGName' ) ]"
+					}
 				}
-
-			}
+			},
+			"dependsOn":
+			[
+				"LinkedTemplate_NetworkSecurityGroup"
+			]
 		}
 	],
 	"outputs":
 	{
+		"resourceInfo_StorageAccount":
+		{
+			"value": "[ reference( 'LinkedTemplate_StorageAccount' ).outputs.resourceInfo.value ]",
+			"type": "object"
+		},
+		"resourceInfo_NetworkSecurityGroup":
+		{
+			"value": "[ reference( 'LinkedTemplate_NetworkSecurityGroup' ).outputs.resourceInfo.value ]",
+			"type": "object"
+		},
 		"resourceInfo_VirtualNetwork":
 		{
 			"value": "[ reference( 'LinkedTemplate_VirtualNetwork' ).outputs.resourceInfo.value ]",

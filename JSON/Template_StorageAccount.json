@@ -53,6 +53,11 @@
 	],
 	"outputs":
 	{
+		"resourceId":
+		{
+			"type": "string",
+			"value": "[ resourceId( 'Microsoft.Storage/storageAccounts', parameters( 'Diagnostic Storage Account Name' ) ) ]"
+		},
 		"resourceInfo":
 		{
 			"value": "[ reference( concat( 'Microsoft.Storage/storageAccounts/', parameters( 'Diagnostic Storage Account Name' ) ), providers( 'Microsoft.Storage', 'storageAccounts' ).apiVersions[ 0 ] ) ]",
