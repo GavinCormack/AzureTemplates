@@ -1,0 +1,70 @@
+
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters":
+	{
+		"Company Prefix":
+		{
+			"type": "string",
+			"defaultValue": "",
+			"maxLength": 8,
+			"metadata":
+			{
+				"description": "The Company Prefix that will be at the beginning of each resource in Azure. (Must be 8 or less characters in length)"
+			}
+		},
+		"Local Admin Password":
+		{
+			"type": "securestring",
+			"defaultValue": "",
+			"minLength": 12,
+			"metadata":
+			{
+				"description": "The Local Admin Password for the Virtual Machines.  (Must be at least 12 character long)"
+			}
+		}
+	},
+	"variables": {},
+	"functions": [],
+	"resources":
+	[
+		{
+			"comments": "Deployment for Storage Account",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2017-05-10",
+			"name": "LinkedTemplate_StorageAccount",
+			"properties":
+			{
+				"mode": "Incremental",
+				"templateLink":
+				{
+					"uri": "https://raw.githubusercontent.com/GavinCormack/AzureTemplates/master/JSON/Template_StorageAccount.json"
+				},
+				"parameters":
+				{
+
+				}
+			}
+		},
+		{
+			"comments": "Deployment for Virtual Network",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2017-05-10",
+			"name": "LinkedTemplate_VirtualNetwork",
+			"properties":
+			{
+				"mode": "Incremental",
+				"templateLink":
+				{
+					"uri": "https://raw.githubusercontent.com/GavinCormack/AzureTemplates/master/JSON/Template_VirtualNetwork.json"
+				},
+				"parameters":
+				{
+
+				}
+			}
+		}
+	],
+	"outputs": {}
+}

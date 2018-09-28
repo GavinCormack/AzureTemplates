@@ -1,0 +1,124 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters":
+	{
+		"Company Prefix":
+		{
+			"type": "string",
+			"defaultValue": "",
+			"maxLength": 8,
+			"metadata":
+			{
+				"description": "The Company Prefix that will be at the beginning of each resource in Azure. (Must be 8 or less characters in length)"
+			}
+		},
+		"Virtual Network Name":
+		{
+			"type": "string",
+			"metadata":
+			{
+				"description": "The name of the Virtual Network"
+			}
+		},
+		"Virtual Network Subnet Name":
+		{
+			"type": "string",
+			"metadata":
+			{
+				"description": "The name of the Subnet in the Virtual Network"
+			}
+		},
+		"Virtual Network Subnet NSG Name":
+		{
+			"type": "string",
+			"metadata":
+			{
+				"description": "The name of the Network Security Group for the Subnet in the Virtual Network"
+			}
+		}
+	},
+	"variables":
+	{
+	},
+	"functions":
+	[
+	],
+	"resources":
+	[
+		{
+			"comments": "Virtual Network",
+			"type": "Microsoft.Network/virtualNetworks",
+			"apiVersion": "2018-08-01",
+			"name": "[ parameters( 'Virtual Network Name' ) ]",
+			"location": "[ resourceGroup().location ]",
+			"properties":
+			{
+				"addressSpace":
+				{
+					"addressPrefixes":
+					[
+						"10.1.0.0/16"
+					]
+				},
+				"dhcpOptions":
+				{
+					"dnsServers":
+					[
+						"168.63.129.16",
+						"168.62.167.9"
+					]
+				},
+				"subnets":
+				[
+					{
+						"name": "[ parameters( 'Virtual Network Subnet Name' ) ]",
+						"properties":
+						{
+							"addressPrefix": "10.1.1.0/25",
+							"networkSecurityGroup":
+							{
+								"id": "[ resourceId( 'Microsoft.Network/networkSecurityGroups', parameters( 'Virtual Network Subnet NSG Name' ) ) ]"
+							}
+						}
+					},
+					{
+						"name": "GatewaySubnet",
+						"properties":
+						{
+							"addressPrefix": "10.1.1.128/28"
+						}
+					}
+				]
+			},
+			"dependsOn":
+			[
+				"[ concat( 'Microsoft.Network/networkSecurityGroups/', parameters( 'Virtual Network Subnet NSG Name' ) ) ]"
+			]
+		},
+		{
+			"comments": "Deployment of Network Security Group",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2017-05-10",
+			"name": "LinkedTemplate_NetworkSecurityGroup",
+			"properties":
+			{
+				"mode": "Incremental",
+				"templateLink":
+				{
+					"uri": "https://raw.githubusercontent.com/GavinCormack/AzureTemplates/master/JSON/Template_NetworkSecurityGroup.json"
+				},
+				"parameters":
+				{
+					"Company Prefix":
+					{
+						"value": "[ parameters( 'Company Prefix' ) ]"
+					}
+				}
+			}
+		}
+	],
+	"outputs":
+	{
+	}
+}

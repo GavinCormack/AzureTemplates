@@ -1,0 +1,163 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters":
+	{
+		"Company Prefix":
+		{
+			"type": "string",
+			"defaultValue": "",
+			"maxLength": 8,
+			"metadata":
+			{
+				"description": "The Company Prefix that will be at the beginning of each resource in Azure. (Must be 8 or less characters in length)"
+			}
+		},
+		"Network Security Group Name":
+		{
+			"type": "string",
+			"metadata":
+			{
+				"description": "The name of the Diagnostic Storage Account"
+			}
+		}
+	},
+	"variables":
+	{
+	},
+	"functions":
+	[
+	],
+	"resources":
+	[
+		{
+			"comments": "Network Security Group for Subnet",
+			"type": "Microsoft.Network/networkSecurityGroups",
+			"apiVersion": "2018-08-01",
+			"name": "[ parameters( 'Virtual Network Subnet NSG Name' ) ]",
+			"location": "[ resourceGroup().location ]",
+			"properties":
+			{
+				"defaultSecurityRules":
+				[
+					{
+						"name": "AllowVnetInBound",
+						"properties":
+						{
+							"access": "Allow",
+							"description": "Allow inbound traffic from all VMs in VNET",
+							"destinationAddressPrefix": "VirtualNetwork",
+							"destinationPortRange": "*",
+							"direction": "Inbound",
+							"priority": 65000,
+							"protocol": "*",
+							"sourceAddressPrefix": "VirtualNetwork",
+							"sourcePortRange": "*"
+						}
+					},
+					{
+						"name": "AllowAzureLoadBalancerInBound",
+						"properties":
+						{
+							"access": "Allow",
+							"description": "Allow inbound traffic from azure load balancer",
+							"destinationAddressPrefix": "*",
+							"destinationPortRange": "*",
+							"direction": "Inbound",
+							"priority": 65001,
+							"protocol": "*",
+							"sourceAddressPrefix": "AzureLoadBalancer",
+							"sourcePortRange": "*"
+						}
+					},
+					{
+						"name": "DenyAllInBound",
+						"properties":
+						{
+							"access": "Deny",
+							"description": "Deny all inbound traffic",
+							"destinationAddressPrefix": "*",
+							"destinationPortRange": "*",
+							"direction": "Inbound",
+							"priority": 65500,
+							"protocol": "*",
+							"sourceAddressPrefix": "*",
+							"sourcePortRange": "*"
+						}
+					},
+					{
+						"name": "AllowVnetOutBound",
+						"properties":
+						{
+							"access": "Allow",
+							"description": "Allow outbound traffic from all VMs to all VMs in VNET",
+							"destinationAddressPrefix": "VirtualNetwork",
+							"destinationPortRange": "*",
+							"direction": "Outbound",
+							"priority": 65000,
+							"protocol": "*",
+							"sourceAddressPrefix": "VirtualNetwork",
+							"sourcePortRange": "*"
+						}
+					},
+					{
+						"name": "AllowInternetOutBound",
+						"properties":
+						{
+							"access": "Allow",
+							"description": "Allow outbound traffic from all VMs to Internet",
+							"destinationAddressPrefix": "Internet",
+							"destinationPortRange": "*",
+							"direction": "Outbound",
+							"priority": 65001,
+							"protocol": "*",
+							"sourceAddressPrefix": "*",
+							"sourcePortRange": "*"
+						}
+					},
+					{
+						"name": "DenyAllOutBound",
+						"properties":
+						{
+							"access": "Deny",
+							"description": "Deny all outbound traffic",
+							"destinationAddressPrefix": "*",
+							"destinationPortRange": "*",
+							"direction": "Outbound",
+							"priority": 65500,
+							"protocol": "*",
+							"sourceAddressPrefix": "*",
+							"sourcePortRange": "*"
+						}
+					}
+				],
+				"securityRules":
+				[
+					{
+						"name": "RDP_3389-Inbound",
+						"properties":
+						{
+							"access": "Allow",
+							"description": "Allow RDP Connections",
+							"destinationAddressPrefix": "*",
+							"destinationPortRange": "3389",
+							"direction": "Inbound",
+							"priority": 100,
+							"protocol": "*",
+							"sourceAddressPrefix": "*",
+							"sourcePortRange": "*"
+						}
+					}
+				]
+			}
+		}
+	],
+	"outputs":
+	{
+		"resourceId":
+		{
+			"type": "string",
+			"value": "[ resourceId( 'Microsoft.Network/networkSecurityGroups', parameters( 'Network Security Group Name' ) ) ]"
+		}
+	}
+}
