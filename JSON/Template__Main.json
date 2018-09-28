@@ -69,5 +69,10 @@
 	],
 	"outputs":
 	{
+		"resourceInfo_VirtualNetwork":
+		{
+			"value": "[ reference( 'LinkedTemplate_VirtualNetwork' ).outputs.resourceInfo.value ]",
+			"type": "object"
+		}
 	}
 }
