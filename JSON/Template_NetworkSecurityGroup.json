@@ -140,15 +140,15 @@
 	],
 	"outputs":
 	{
-		"resourceId":
-		{
-			"type": "string",
-			"value": "[ resourceId( 'Microsoft.Network/networkSecurityGroups', parameters( 'Network Security Group Name' ) ) ]"
-		},
-		"resourceName":
-		{
-			"type": "string",
-			"value": "[ reference( parameters( 'Network Security Group Name' ) ).name ]"
-		}
+					"resourceId":
+					{
+						"type": "string",
+						"value": "[ resourceId( 'Microsoft.Network/networkSecurityGroups', parameters( 'Virtual Network Subnet NSG Name' ) ) ]"
+					},
+					"resourceName":
+					{
+						"type": "string",
+						"value": "[ reference( parameters( 'Virtual Network Subnet NSG Name' ) ).name ]"
+					}
 	}
 }

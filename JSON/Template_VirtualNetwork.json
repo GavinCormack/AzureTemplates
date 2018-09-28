@@ -86,10 +86,13 @@
 				{
 					"uri": "https://raw.githubusercontent.com/GavinCormack/AzureTemplates/master/JSON/Template_NetworkSecurityGroup.json"
 				},
-				"parameters":
-				{
-					"Virtual Network Subnet NSG Name":	{ "value": "[ parameters( 'Virtual Network Subnet NSG Name' ) ]" }
-				}
+													"parameters":
+													{
+																																																					"Virtual Network Subnet NSG Name":
+																																																					{
+																																																						"value": "[ parameters( 'Virtual Network Subnet NSG Name' ) ]"
+																																																					}
+													}
 			}
 		}
 	],
