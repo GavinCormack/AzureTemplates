@@ -107,11 +107,6 @@
 				"templateLink":
 				{
 					"uri": "https://raw.githubusercontent.com/GavinCormack/AzureTemplates/master/JSON/Template_NetworkSecurityGroup.json"
-				},
-				"parametersLink":
-				{
-					"uri": "https://raw.githubusercontent.com/GavinCormack/AzureTemplates/master/JSON/Template_NetworkSecurityGroup.parameters.json"
-
 				}
 			}
 		}
