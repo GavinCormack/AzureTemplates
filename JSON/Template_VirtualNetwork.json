@@ -27,7 +27,7 @@
 		{
 			"comments": "Virtual Network",
 			"type": "Microsoft.Network/virtualNetworks",
-			"apiVersion": "2018-08-01",
+			"apiVersion": "2018-02-01",
 			"name": "[ parameters( 'Virtual Network Name' ) ]",
 			"location": "[ resourceGroup().location ]",
 			"properties":

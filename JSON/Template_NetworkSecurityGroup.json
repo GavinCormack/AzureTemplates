@@ -16,127 +16,127 @@
 	],
 	"resources":
 	[
+		{
+			"comments": "Network Security Group for Subnet",
+			"type": "Microsoft.Network/networkSecurityGroups",
+			"apiVersion": "2018-02-01",
+			"name": "[ parameters( 'Virtual Network Subnet NSG Name' ) ]",
+			"location": "[ resourceGroup().location ]",
+			"properties":
+			{
+				"defaultSecurityRules":
+				[
 					{
-						"comments": "Network Security Group for Subnet",
-						"type": "Microsoft.Network/networkSecurityGroups",
-						"apiVersion": "2018-08-01",
-						"name": "[ parameters( 'Virtual Network Subnet NSG Name' ) ]",
-						"location": "[ resourceGroup().location ]",
+						"name": "AllowVnetInBound",
 						"properties":
 						{
-							"defaultSecurityRules":
-							[
-								{
-									"name": "AllowVnetInBound",
-									"properties":
-									{
-										"access": "Allow",
-										"description": "Allow inbound traffic from all VMs in VNET",
-										"destinationAddressPrefix": "VirtualNetwork",
-										"destinationPortRange": "*",
-										"direction": "Inbound",
-										"priority": 65000,
-										"protocol": "*",
-										"sourceAddressPrefix": "VirtualNetwork",
-										"sourcePortRange": "*"
-									}
-								},
-								{
-									"name": "AllowAzureLoadBalancerInBound",
-									"properties":
-									{
-										"access": "Allow",
-										"description": "Allow inbound traffic from azure load balancer",
-										"destinationAddressPrefix": "*",
-										"destinationPortRange": "*",
-										"direction": "Inbound",
-										"priority": 65001,
-										"protocol": "*",
-										"sourceAddressPrefix": "AzureLoadBalancer",
-										"sourcePortRange": "*"
-									}
-								},
-								{
-									"name": "DenyAllInBound",
-									"properties":
-									{
-										"access": "Deny",
-										"description": "Deny all inbound traffic",
-										"destinationAddressPrefix": "*",
-										"destinationPortRange": "*",
-										"direction": "Inbound",
-										"priority": 65500,
-										"protocol": "*",
-										"sourceAddressPrefix": "*",
-										"sourcePortRange": "*"
-									}
-								},
-								{
-									"name": "AllowVnetOutBound",
-									"properties":
-									{
-										"access": "Allow",
-										"description": "Allow outbound traffic from all VMs to all VMs in VNET",
-										"destinationAddressPrefix": "VirtualNetwork",
-										"destinationPortRange": "*",
-										"direction": "Outbound",
-										"priority": 65000,
-										"protocol": "*",
-										"sourceAddressPrefix": "VirtualNetwork",
-										"sourcePortRange": "*"
-									}
-								},
-								{
-									"name": "AllowInternetOutBound",
-									"properties":
-									{
-										"access": "Allow",
-										"description": "Allow outbound traffic from all VMs to Internet",
-										"destinationAddressPrefix": "Internet",
-										"destinationPortRange": "*",
-										"direction": "Outbound",
-										"priority": 65001,
-										"protocol": "*",
-										"sourceAddressPrefix": "*",
-										"sourcePortRange": "*"
-									}
-								},
-								{
-									"name": "DenyAllOutBound",
-									"properties":
-									{
-										"access": "Deny",
-										"description": "Deny all outbound traffic",
-										"destinationAddressPrefix": "*",
-										"destinationPortRange": "*",
-										"direction": "Outbound",
-										"priority": 65500,
-										"protocol": "*",
-										"sourceAddressPrefix": "*",
-										"sourcePortRange": "*"
-									}
-								}
-							],
-							"securityRules":
-							[
-								{
-									"name": "RDP_3389-Inbound",
-									"properties":
-									{
-										"access": "Allow",
-										"description": "Allow RDP Connections",
-										"destinationAddressPrefix": "*",
-										"destinationPortRange": "3389",
-										"direction": "Inbound",
-										"priority": 100,
-										"protocol": "*",
-										"sourceAddressPrefix": "*",
-										"sourcePortRange": "*"
-									}
-								}
-							]
+							"access": "Allow",
+							"description": "Allow inbound traffic from all VMs in VNET",
+							"destinationAddressPrefix": "VirtualNetwork",
+							"destinationPortRange": "*",
+							"direction": "Inbound",
+							"priority": 65000,
+							"protocol": "*",
+							"sourceAddressPrefix": "VirtualNetwork",
+							"sourcePortRange": "*"
+						}
+					},
+					{
+						"name": "AllowAzureLoadBalancerInBound",
+						"properties":
+						{
+							"access": "Allow",
+							"description": "Allow inbound traffic from azure load balancer",
+							"destinationAddressPrefix": "*",
+							"destinationPortRange": "*",
+							"direction": "Inbound",
+							"priority": 65001,
+							"protocol": "*",
+							"sourceAddressPrefix": "AzureLoadBalancer",
+							"sourcePortRange": "*"
+						}
+					},
+					{
+						"name": "DenyAllInBound",
+						"properties":
+						{
+							"access": "Deny",
+							"description": "Deny all inbound traffic",
+							"destinationAddressPrefix": "*",
+							"destinationPortRange": "*",
+							"direction": "Inbound",
+							"priority": 65500,
+							"protocol": "*",
+							"sourceAddressPrefix": "*",
+							"sourcePortRange": "*"
+						}
+					},
+					{
+						"name": "AllowVnetOutBound",
+						"properties":
+						{
+							"access": "Allow",
+							"description": "Allow outbound traffic from all VMs to all VMs in VNET",
+							"destinationAddressPrefix": "VirtualNetwork",
+							"destinationPortRange": "*",
+							"direction": "Outbound",
+							"priority": 65000,
+							"protocol": "*",
+							"sourceAddressPrefix": "VirtualNetwork",
+							"sourcePortRange": "*"
+						}
+					},
+					{
+						"name": "AllowInternetOutBound",
+						"properties":
+						{
+							"access": "Allow",
+							"description": "Allow outbound traffic from all VMs to Internet",
+							"destinationAddressPrefix": "Internet",
+							"destinationPortRange": "*",
+							"direction": "Outbound",
+							"priority": 65001,
+							"protocol": "*",
+							"sourceAddressPrefix": "*",
+							"sourcePortRange": "*"
+						}
+					},
+					{
+						"name": "DenyAllOutBound",
+						"properties":
+						{
+							"access": "Deny",
+							"description": "Deny all outbound traffic",
+							"destinationAddressPrefix": "*",
+							"destinationPortRange": "*",
+							"direction": "Outbound",
+							"priority": 65500,
+							"protocol": "*",
+							"sourceAddressPrefix": "*",
+							"sourcePortRange": "*"
 						}
 					}
+				],
+				"securityRules":
+				[
+					{
+						"name": "RDP_3389-Inbound",
+						"properties":
+						{
+							"access": "Allow",
+							"description": "Allow RDP Connections",
+							"destinationAddressPrefix": "*",
+							"destinationPortRange": "3389",
+							"direction": "Inbound",
+							"priority": 100,
+							"protocol": "*",
+							"sourceAddressPrefix": "*",
+							"sourcePortRange": "*"
+						}
+					}
+				]
+			}
+		}
 	],
 	"outputs":
 	{
