@@ -14,14 +14,12 @@
 				"description": "The Company Prefix that will be at the beginning of each resource in Azure. (Must be 8 or less characters in length)"
 			}
 		},
-		"Local Admin Password":
+		"Diagnostic Storage Account Name":
 		{
-			"type": "securestring",
-			"defaultValue": "",
-			"minLength": 12,
+			"type": "string",
 			"metadata":
 			{
-				"description": "The Local Admin Password for the Virtual Machines.  (Must be at least 12 character long)"
+				"description": "Name of Diagnostic Storage Account"
 			}
 		}
 	},
@@ -43,7 +41,10 @@
 				},
 				"parameters":
 				{
-
+					"Diagnostic Storage Account Name":
+					{
+						"value": "[ parameters( 'Diagnostic Storage Account Name' ) ]"
+					}
 				}
 			}
 		},
@@ -59,9 +60,9 @@
 				{
 					"uri": "https://raw.githubusercontent.com/GavinCormack/AzureTemplates/master/JSON/Template_VirtualNetwork.json"
 				},
-				"parameters":
+				"parametersLink":
 				{
-
+					"uri": "https://raw.githubusercontent.com/GavinCormack/AzureTemplates/master/JSON/Template_VirtualNetwork.parameters.json"
 				}
 			}
 		}
