@@ -1,4 +1,3 @@
-
 {
 	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
 	"contentVersion": "1.0.0.0",
@@ -13,18 +12,19 @@
 			{
 				"description": "The Company Prefix that will be at the beginning of each resource in Azure. (Must be 8 or less characters in length)"
 			}
-		},
-		"Diagnostic Storage Account Name":
-		{
-			"type": "string",
-			"metadata":
-			{
-				"description": "Name of Diagnostic Storage Account"
-			}
 		}
 	},
-	"variables": {},
-	"functions": [],
+	"variables":
+	{
+		"CompanyPrefix_Uppercase": "[ toUpper( parameters( 'Company Prefix' ) ) ]",
+		"DiagnosticStorageAccountName": "[ toLower( concat( parameters( 'Company Prefix' ), 'diag01' ) ) ]",
+		"VirtualNetworkName": "[ concat( variables( 'CompanyPrefix_Uppercase' ), '-VNET-01' ) ]",
+		"VirtualNetworkSubnetName": "[ concat( variables( 'CompanyPrefix_Uppercase' ), '-SubNET-01' ) ]",
+		"VirtualNetworkSubnetNSGName": "[ concat( variables( 'VirtualNetworkSubnetName' ), '-NSG' ) ]"
+	},
+	"functions":
+	[
+	],
 	"resources":
 	[
 		{
@@ -41,8 +41,7 @@
 				},
 				"parameters":
 				{
-					"Company Prefix":					{ "value": "[ parameters( 'Company Prefix' ) ]" },
-					"Diagnostic Storage Account Name":	{ "value": "[ parameters( 'Diagnostic Storage Account Name' ) ]" }
+					"Diagnostic Storage Account Name":	{ "value": "[ variables( 'DiagnosticStorageAccountName' ) ]" }
 				}
 			}
 		},
@@ -57,9 +56,18 @@
 				"templateLink":
 				{
 					"uri": "https://raw.githubusercontent.com/GavinCormack/AzureTemplates/master/JSON/Template_VirtualNetwork.json"
+				},
+				"parameters":
+				{
+					"Virtual Network Name":				{ "value": "[ variables( 'VirtualNetworkName' ) ]" },
+					"Virtual Network Subnet Name":		{ "value": "[ variables( 'VirtualNetworkSubnetName' ) ]" },
+					"Virtual Network Subnet NSG Name":	{ "value": "[ variables( 'VirtualNetworkSubnetNSGName' ) ]" }
 				}
+
 			}
 		}
 	],
-	"outputs": {}
+	"outputs":
+	{
+	}
 }

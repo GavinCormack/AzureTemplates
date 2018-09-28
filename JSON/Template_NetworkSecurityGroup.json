@@ -3,23 +3,9 @@
 	"contentVersion": "1.0.0.0",
 	"parameters":
 	{
-		"Company Prefix":
-		{
-			"type": "string",
-			"defaultValue": "",
-			"maxLength": 8,
-			"metadata":
-			{
-				"description": "The Company Prefix that will be at the beginning of each resource in Azure. (Must be 8 or less characters in length)"
-			}
-		},
 		"Network Security Group Name":
 		{
-			"type": "string",
-			"metadata":
-			{
-				"description": "The name of the Diagnostic Storage Account"
-			}
+			"type": "string"
 		}
 	},
 	"variables":
