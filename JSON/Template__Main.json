@@ -734,7 +734,6 @@
 						"value": "[ if( less( parameters( 'VM Index' ), parameters( 'Number Of DCs' ) ), '[ parameters( 'Availability Set Id' ) ]', '0' ) ]"
 					}
 				}
-
 			}
 		}
 	],
@@ -1126,7 +1125,7 @@
 		},
 		{
 			"condition": "[ equals( parameters( 'Using Domain Services' ), 'true' ) ]",
-			"comment": "Deployment for Domain Services",
+			"comments": "Deployment for Domain Services",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2017-05-10",
 			"name": "LinkedTemplate_DomainServices",
