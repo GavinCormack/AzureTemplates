@@ -1,0 +1,88 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters":
+	{
+		"Virtual Network Gateway Name":
+		{
+			"type": "string"
+		},
+		"Virtual Network Gateway PIP ID":
+		{
+			"type": "string"
+		},
+		"Virtual Network Subnet ID":
+		{
+			"type": "string"
+		}
+	},
+	"variables":
+	{
+	},
+	"functions":
+	[
+	],
+	"resources":
+	[
+		{
+			"comments": "Virtual Network Gateway",
+			"type": "Microsoft.Network/virtualNetworkGateways",
+			"apiVersion": "2018-08-01",
+			"name": "[ parameters( 'Virtual Network Gateway Name' ) ]",
+			"location": "[ resourceGroup().location ]",
+			"properties":
+			{
+				"ipConfigurations":
+				[
+					{
+						"properties":
+						{
+							"privateIPAllocationMethod": "Dynamic",
+							"publicIPAddress":
+							{
+								"id": "[ parameters( 'Virtual Network Gateway PIP ID' ) ]"
+							},
+							"subnet":
+							{
+								"id": "[ parameters( 'Virtual Network Subnet ID' ) ]"
+							}
+						},
+						"name": "VNETGatewayConfig"
+					}
+				],
+				"sku":
+				{
+					"name": "Basic",
+					"tier": "Basic"
+				},
+				"gatewayType": "Vpn",
+				"vpnType": "RouteBased",
+				"enableBgp": false,
+				"activeActive": false,
+				"vpnClientConfiguration":
+				{
+					"vpnClientProtocols":
+					[
+						"SSTP"
+					]
+				}
+			},
+			"dependsOn":
+			[
+			]
+		}
+	],
+	"outputs":
+	{
+		"resourceId":
+		{
+			"type": "string",
+			"value": "[ resourceId( 'Microsoft.Network/virtualNetworkGateways', parameters( 'Virtual Network Gateway Name' ) ) ]"
+		},
+		"resourceInfo":
+		{
+			"value": "[ reference( concat( 'Microsoft.Network/virtualNetworkGateways/', parameters( 'Virtual Network Gateway Name' ) ), providers( 'Microsoft.Network', 'virtualNetworkGateways' ).apiVersions[ 0 ] ) ]",
+			"type": "object"
+		}
+	}
+}

@@ -1,0 +1,59 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters":
+	{
+		"Local Network Gateway Name":
+		{
+			"type": "string"
+		},
+		"Current System IP Range":
+		{
+			"type": "string"
+		},
+		"Current System External IP":
+		{
+			"type": "string"
+		}
+	},
+	"variables":
+	{
+	},
+	"functions":
+	[
+	],
+	"resources":
+	[
+		{
+			"comments": "Local Network Gateway",
+			"type": "Microsoft.Network/localNetworkGateways",
+			"apiVersion": "2018-08-01",
+			"name": "[ parameters( 'Local Network Gateway Name' ) ]",
+			"location": "[ resourceGroup().location ]",
+			"properties":
+			{
+				"localNetworkAddressSpace":
+				{
+					"addressPrefixes": "[ parameters( 'Current System IP Range' ) ]"
+				},
+				"gatewayIpAddress": "[ parameters( 'Current System External IP' ) ]"
+			},
+			"dependsOn":
+			[
+			]
+		}
+	],
+	"outputs":
+	{
+		"resourceId":
+		{
+			"type": "string",
+			"value": "[ resourceId( 'Microsoft.Network/localNetworkGateways', parameters( 'Local Network Gateway Name' ) ) ]"
+		},
+		"resourceInfo":
+		{
+			"value": "[ reference( concat( 'Microsoft.Network/localNetworkGateways/', parameters( 'Local Network Gateway Name' ) ), providers( 'Microsoft.Network', 'localNetworkGateways' ).apiVersions[ 0 ] ) ]",
+			"type": "object"
+		}
+	}
+}

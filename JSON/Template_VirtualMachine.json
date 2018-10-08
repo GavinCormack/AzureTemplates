@@ -1,0 +1,203 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters":
+	{
+		"Virtual Machine Name":
+		{
+			"type": "string"
+		},
+		"Virtual Machine OS":
+		{
+			"type": "string"
+		},
+		"Virtual Machine Size":
+		{
+			"type": "string"
+		},
+		"Availability Set ID":
+		{
+			"type": "string"
+		},
+		"Diagnostic Storage Account Name":
+		{
+			"type": "string"
+		},
+		"Virtual Machine NIC ID":
+		{
+			"type": "string"
+		},
+		"Virtual Machine Data Disk Size":
+		{
+			"type": "int"
+		},
+		"Local Admin Password":
+		{
+			"type": "securestring"
+		}
+	},
+	"variables":
+	{
+	},
+	"functions":
+	[
+	],
+	"resources":
+	[
+		{
+			"condition": "[ equals( parameters( 'Availability Set ID' ), '0' ) ]",
+			"comments": "Virtual Machine",
+			"type": "Microsoft.Compute/virtualMachines",
+			"apiVersion": "2018-06-01",
+			"name": "[ parameters( 'Virtual Machine Name' ) ]",
+			"location": "[ resourceGroup().location ]",
+			"properties":
+			{
+				"diagnosticsProfile":
+				{
+					"bootDiagnostics":
+					{
+						"enabled": true,
+						"storageUri": "[ concat( 'https://', parameters( 'Diagnostic Storage Account Name' ), '.blob.core.windows.net/' ) ]"
+					}
+				},
+				"hardwareProfile":
+				{
+					"vmSize": "[ parameters( 'Virtual Machine Size' ) ]"
+				},
+				"networkProfile":
+				{
+					"networkInterfaces":
+					[
+						{
+							"id": "[ parameters( 'Virtual Machine NIC ID' ) ]"
+						}
+					]
+				},
+				"osProfile":
+				{
+					"adminPassword": "[ parameters( 'Local Admin Password' ) ]",
+					"adminUsername": "zadmin",
+					"computerName": "[ parameters( 'Virtual Machine Name' ) ]",
+					"windowsConfiguration":
+					{
+						"enableAutomaticUpdates": true,
+						"provisionVMAgent": true,
+						"timeZone": "GMT Standard Time"
+					}
+				},
+				"storageProfile":
+				{
+					"imageReference":
+					{
+						"offer": "WindowsServer",
+						"publisher": "MicrosoftWindowsServer",
+						"sku": "[ parameters( 'Virtual Machine OS' ) ]",
+						"version": "latest"
+					},
+					"osDisk":
+					{
+						"name": "[ concat( parameters( 'Virtual Machine Name' ), '-osDisk' ) ]",
+						"caching": "ReadWrite",
+						"createOption": "FromImage",
+						"diskSizeGB": "127",
+						"managedDisk":
+						{
+							"storageAccountType": "Premium_LRS"
+						},
+						"osType": "Windows"
+					}
+				}
+			},
+			"dependsOn":
+			[
+			]
+		},
+		{
+			"condition": "[ not( equals( parameters( 'Availability Set ID' ), '0' ) ) ]",
+			"comments": "Virtual Machine with Availability Set",
+			"type": "Microsoft.Compute/virtualMachines",
+			"apiVersion": "2018-06-01",
+			"name": "[ parameters( 'Virtual Machine Name' ) ]",
+			"location": "[ resourceGroup().location ]",
+			"properties":
+			{
+				"availabilitySet":
+				{
+					"id": "[ parameters( 'Availability Set ID' ) ]"
+				},
+				"diagnosticsProfile":
+				{
+					"bootDiagnostics":
+					{
+						"enabled": true,
+						"storageUri": "[ concat( 'https://', parameters( 'Diagnostic Storage Account Name' ), '.blob.core.windows.net/' ) ]"
+					}
+				},
+				"hardwareProfile":
+				{
+					"vmSize": "[ parameters( 'Virtual Machine Size' ) ]"
+				},
+				"networkProfile":
+				{
+					"networkInterfaces":
+					[
+						{
+							"id": "[ parameters( 'Virtual Machine NIC ID' ) ]"
+						}
+					]
+				},
+				"osProfile":
+				{
+					"adminPassword": "[ parameters( 'Local Admin Password' ) ]",
+					"adminUsername": "zadmin",
+					"computerName": "[ parameters( 'Virtual Machine Name' ) ]",
+					"windowsConfiguration":
+					{
+						"enableAutomaticUpdates": true,
+						"provisionVMAgent": true,
+						"timeZone": "GMT Standard Time"
+					}
+				},
+				"storageProfile":
+				{
+					"imageReference":
+					{
+						"offer": "WindowsServer",
+						"publisher": "MicrosoftWindowsServer",
+						"sku": "[ parameters( 'Virtual Machine OS' ) ]",
+						"version": "latest"
+					},
+					"osDisk":
+					{
+						"name": "[ concat( parameters( 'Virtual Machine Name' ), '-osDisk' ) ]",
+						"caching": "ReadWrite",
+						"createOption": "FromImage",
+						"diskSizeGB": "127",
+						"managedDisk":
+						{
+							"storageAccountType": "Premium_LRS"
+						},
+						"osType": "Windows"
+					}
+				}
+			},
+			"dependsOn":
+			[
+			]
+		}
+	],
+	"outputs":
+	{
+		"resourceId":
+		{
+			"type": "string",
+			"value": "[ resourceId( 'Microsoft.Compute/virtualMachines', parameters( 'Virtual Machine Name' ) ) ]"
+		},
+		"resourceInfo":
+		{
+			"value": "[ reference( concat( 'Microsoft.Compute/virtualMachines/', parameters( 'Virtual Machine Name' ) ), providers( 'Microsoft.Compute', 'virtualMachines' ).apiVersions[ 0 ] ) ]",
+			"type": "object"
+		}
+	}
+}

@@ -24,7 +24,336 @@
 			],
 			"metadata":
 			{
-				"description": "Do you wnat to use an Azure Managed Domain and allow user to log in with their email addresses?"
+				"description": "Do you want to use an Azure Managed Domain and allow user to log in with their email addresses?"
+			}
+		},
+		"Domain Name":
+		{
+			"type": "string",
+			"defaultValue": "",
+			"metadata":
+			{
+				"description": "The Domain to use.  (i.e  zinontest.ie)"
+			}
+		},
+		"Current System IP Range":
+		{
+			"type": "array",
+			"defaultValue":
+			[
+				"10.x.x.0/24"
+			],
+			"minLength": 1,
+			"metadata":
+			{
+				"description": "The Address Space of the Companies current network on VMware/On-Prem"
+			}
+		},
+		"Current System External IP":
+		{
+			"type": "string",
+			"defaultValue": "193.120.46.36",
+			"metadata":
+			{
+				"description": "The External address for the VPN to connect to. If in VMware leave as SonicWall Address, if On-Prem change to Public IP Address."
+			}
+		},
+		"VPN Shared Key":
+		{
+			"type": "securestring",
+			"defaultValue": "",
+			"minLength": 10,
+			"metadata":
+			{
+				"description": "The Shared Key for the VPN Connection between VMware and Azure.  (Must be at least 10 character long)"
+			}
+		},
+		"Local Admin Password":
+		{
+			"type": "securestring",
+			"defaultValue": "",
+			"minLength": 12,
+			"metadata":
+			{
+				"description": "The Local Admin Password for the VMs.  (Must be at least 12 character long)"
+			}
+		},
+		"Number of DC Servers":
+		{
+			"type": "int",
+			"defaultValue": 2,
+			"minValue": 0,
+			"metadata":
+			{
+				"description": "The Number of DC Servers (Domain Controller). **This does not apply if Domain Services is 'true'.**"
+			}
+		},
+		"DC Server OS Version":
+		{
+			"type": "string",
+			"defaultValue": "2016-Datacenter",
+			"allowedValues":
+			[
+				"2008-R2-SP1",
+				"2012-Datacenter",
+				"2012-R2-Datacenter",
+				"2016-Datacenter"
+			],
+			"metadata":
+			{
+				"description": "The Windows OS Version for the DC Servers."
+			}
+		},
+		"Number of RDS Servers":
+		{
+			"type": "int",
+			"defaultValue": 1,
+			"minValue": 0,
+			"metadata":
+			{
+				"description": "The Number of RDS Servers (Remote Desktop Services)."
+			}
+		},
+		"RDS Server OS Version":
+		{
+			"type": "string",
+			"defaultValue": "2016-Datacenter",
+			"allowedValues":
+			[
+				"2008-R2-SP1",
+				"2012-Datacenter",
+				"2012-R2-Datacenter",
+				"2016-Datacenter"
+			],
+			"metadata":
+			{
+				"description": "The Windows OS Version for the RDS Servers."
+			}
+		},
+		"Number of FS Servers":
+		{
+			"type": "int",
+			"defaultValue": 1,
+			"minValue": 0,
+			"metadata":
+			{
+				"description": "The Number of FS Servers (File Server)."
+			}
+		},
+		"FS Server OS Version":
+		{
+			"type": "string",
+			"defaultValue": "2016-Datacenter",
+			"allowedValues":
+			[
+				"2008-R2-SP1",
+				"2012-Datacenter",
+				"2012-R2-Datacenter",
+				"2016-Datacenter"
+			],
+			"metadata":
+			{
+				"description": "The Windows OS Version for the FS Servers."
+			}
+		},
+		"Number of SQL Servers":
+		{
+			"type": "int",
+			"defaultValue": 1,
+			"minValue": 0,
+			"metadata":
+			{
+				"description": "The Number of SQL Servers (SQL Server)."
+			}
+		},
+		"SQL Server OS Version":
+		{
+			"type": "string",
+			"defaultValue": "2016-Datacenter",
+			"allowedValues":
+			[
+				"2008-R2-SP1",
+				"2012-Datacenter",
+				"2012-R2-Datacenter",
+				"2016-Datacenter"
+			],
+			"metadata":
+			{
+				"description": "The Windows OS Version for the SQL Servers."
+			}
+		},
+		"Number of Custom Servers":
+		{
+			"type": "int",
+			"defaultValue": 0,
+			"minValue": 0,
+			"metadata":
+			{
+				"description": "The Number of Custom Server Names you want. - i.e A Server with a different name than above."
+			}
+		},
+		"Custom Server OS Version":
+		{
+			"type": "string",
+			"defaultValue": "2016-Datacenter",
+			"allowedValues":
+			[
+				"2008-R2-SP1",
+				"2012-Datacenter",
+				"2012-R2-Datacenter",
+				"2016-Datacenter"
+			],
+			"metadata":
+			{
+				"description": "The Windows OS Version for the Custom Servers."
+			}
+		},
+		"Array of Custom Server Names":
+		{
+			"type": "array",
+			"defaultValue":
+			[
+				"AZURE-Custom-SRV1",
+				"AZURE-Custom-SRV2"
+			],
+			"minlength": 0,
+			"metadata":
+			{
+				"description": "Enter the name you want for the servers. Enter the name inside [] and put '' around the name, if you have more than one, put a comma in between.  i.e  ['SRV-01','SRV-02']"
+			}
+		},
+		"Size of RDS Server":
+		{
+			"type": "string",
+			"defaultValue": "Standard_E2s_v3",
+			"allowedValues":
+			[
+				"Standard_B1ms",
+				"Standard_B1s",
+				"Standard_B2ms",
+				"Standard_B2s",
+				"Standard_B4ms",
+				"Standard_B8ms",
+				"Standard_D2s_v3",
+				"Standard_D4s_v3",
+				"Standard_D8s_v3",
+				"Standard_D16s_v3",
+				"Standard_D32s_v3",
+				"Standard_D64s_v3",
+				"Standard_DS1",
+				"Standard_DS2",
+				"Standard_DS3",
+				"Standard_DS4",
+				"Standard_DS11",
+				"Standard_DS12",
+				"Standard_DS13",
+				"Standard_DS14",
+				"Standard_DS1_v2",
+				"Standard_DS2_v2",
+				"Standard_DS3_v2",
+				"Standard_DS4_v2",
+				"Standard_DS5_v2",
+				"Standard_DS11_v2",
+				"Standard_DS11-1_v2",
+				"Standard_DS12_v2",
+				"Standard_DS12-1_v2",
+				"Standard_DS12-2_v2",
+				"Standard_DS13_v2",
+				"Standard_DS13-2_v2",
+				"Standard_DS13-4_v2",
+				"Standard_DS14_v2",
+				"Standard_DS14-4_v2",
+				"Standard_DS14-8_v2",
+				"Standard_DS15_v2",
+				"Standard_E2s_v3",
+				"Standard_E4s_v3",
+				"Standard_E4-2s_v3",
+				"Standard_E8s_v3",
+				"Standard_E8-2s_v3",
+				"Standard_E8-4s_v3",
+				"Standard_E16s_v3",
+				"Standard_E16-4s_v3",
+				"Standard_E16-8s_v3",
+				"Standard_E20s_v3",
+				"Standard_E32s_v3",
+				"Standard_E32-8s_v3",
+				"Standard_E32-16s_v3",
+				"Standard_E64s_v3",
+				"Standard_E64is_v3",
+				"Standard_E64-16s_v3",
+				"Standard_E64-32s_v3",
+				"Standard_F1s",
+				"Standard_F2s",
+				"Standard_F4s",
+				"Standard_F8s",
+				"Standard_F16s",
+				"Standard_F2s_v2",
+				"Standard_F4s_v2",
+				"Standard_F8s_v2",
+				"Standard_F16s_v2",
+				"Standard_F32s_v2",
+				"Standard_F64s_v2",
+				"Standard_F72s_v2",
+				"Standard_M8ms",
+				"Standard_M8-2ms",
+				"Standard_M8-4ms",
+				"Standard_M16ms",
+				"Standard_M16-4ms",
+				"Standard_M16-8ms",
+				"Standard_M32ls",
+				"Standard_M32ms",
+				"Standard_M32-8ms",
+				"Standard_M32-16ms",
+				"Standard_M32ts",
+				"Standard_M64ls",
+				"Standard_M64m",
+				"Standard_M64ms",
+				"Standard_M64-16ms",
+				"Standard_M64-32ms",
+				"Standard_M64s",
+				"Standard_M128s",
+				"Standard_M128ms",
+				"Standard_M128-32ms",
+				"Standard_M128-64ms"
+			],
+			"metadata":
+			{
+				"description": "The Size of the RDS Servers."
+			}
+		},
+		"Data Disks Server":
+		{
+			"type": "string",
+			"defaultValue": "FS",
+			"allowedValues":
+			[
+				"DC",
+				"RDS",
+				"FS",
+				"SQL",
+				"Custom Server"
+			],
+			"metadata":
+			{
+				"description": "Server to attach Data Disk to. (FS recommended)"
+			}
+		},
+		"Size Of Data Disk":
+		{
+			"type": "int",
+			"defaultValue": 1023,
+			"allowedValues":
+			[
+				127,
+				255,
+				511,
+				1023,
+				2047,
+				4095
+			],
+			"metadata":
+			{
+				"description": "The size of Data Disk to attach."
 			}
 		}
 	},
@@ -34,10 +363,363 @@
 		"DiagnosticStorageAccountName": "[ toLower( concat( parameters( 'Company Prefix' ), 'diag01' ) ) ]",
 		"VirtualNetworkName": "[ concat( variables( 'CompanyPrefix_Uppercase' ), '-VNET-01' ) ]",
 		"VirtualNetworkSubnetName": "[ concat( variables( 'CompanyPrefix_Uppercase' ), '-SubNET-01' ) ]",
-		"VirtualNetworkSubnetNSGName": "[ concat( variables( 'VirtualNetworkSubnetName' ), '-NSG' ) ]"
+		"VirtualNetworkSubnetNSGName": "[ concat( variables( 'VirtualNetworkSubnetName' ), '-NSG' ) ]",
+		"VirtualNetworkGatewayName": "[ concat( variables( 'VirtualNetworkName' ), '-GW' ) ]",
+		"LocalNetworkGatewayName": "[ concat( variables( 'CompanyPrefix_Uppercase' ), '-LN-GW' ) ]",
+		"ConnectionName": "OLD--AZURE",
+		"AvailabilitySetName": "[ concat( variables( 'CompanyPrefix_Uppercase' ), '-AS' ) ]",
+		"NumberOfDCServers": "[ if( equals( parameters( 'Using Domain Services' ) ), 0, parameters( 'Number of DC Servers' ) ) ]",
+		"NumberOfVMs": "[ add( add( add( add( variables( 'NumberOfDCServers' ), parameters( 'Number of RDS Servers' ) ), parameters( 'Number of FS Servers' ) ), parameters( 'Number of SQL Servers' ) ), parameters( 'Number of Custom Servers' ) ) ]",
+		"NumberOfPIPs": "[ add( variables( 'NumberOfVMs' ), 1 ) ]"
 	},
 	"functions":
 	[
+		{
+			"namespace": "GavFunctions",
+			"members":
+			{
+				"getPIPNameArray":
+				{
+					"parameters":
+					[
+						{
+							"type": "string",
+							"name": "Company Prefix Upper"
+						},
+						{
+							"type": "int",
+							"name": "Number Of DCs"
+						},
+						{
+							"type": "int",
+							"name": "Number Of RDSs"
+						},
+						{
+							"type": "int",
+							"name": "Number Of FSs"
+						},
+						{
+							"type": "int",
+							"name": "Number Of SQLs"
+						},
+						{
+							"type": "int",
+							"name": "Number Of Customs"
+						},
+						{
+							"type": "array",
+							"name": "Custom VM Names"
+						},
+						{
+							"type": "string",
+							"name": "Virtual Network Gateway Name"
+						},
+						{
+							"type": "int",
+							"name": "VM Index"
+						}
+					],
+					"output": "[ if( less( parameters( 'VM Index' ), parameters( 'Number Of DCs' ) ), concat( parameters( 'Company Prefix Upper' ), '-DC-', padLeft( add( parameters( 'VM Index' ), 1 ), 2, '0' ), '-PIP-01' ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ),  parameters( 'Number Of RDSs' ) ) ), concat( parameters( 'Company Prefix Upper' ), '-RDS-', padLeft( sub( add( parameters( 'VM Index' ), 1 ), parameters( 'Number Of DCs' ) ), 2, '0' ), '-PIP-01' ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), parameters( 'Number Of FSs' ) ) ) ), concat( parameters( 'Company Prefix Upper' ), '-FS-', padLeft( sub( add( parameters( 'VM Index' ), 1 ), add( parameters( 'Number Of DCs' ), parameters( 'Number Of RDSs' ) ) ), 2, '0' ), '-PIP-01' ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), parameters( 'Number Of SQLs' ) ) ) ) ), concat( parameters( 'Company Prefix Upper' ), '-SQL-', padLeft( sub( add( parameters( 'VM Index' ), 1 ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), parameters( 'Number Of FSs' ) ) ) ), 2, '0' ), '-PIP-01' ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), add( parameters( 'Number Of SQLs' ), parameters( 'Number Of Customs' ) ) ) ) ) ), concat( parameters( 'Company Prefix Upper' ), parameters( 'Custom VM Names' )[ sub( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), parameters( 'Number Of SQLs' ) ) ) ) ) ], padLeft( sub( add( parameters( 'VM Index' ), 1 ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), parameters( 'Number Of SQLs' ) ) ) ) ), 2, '0' ), '-PIP-01' ), concat( parameters( 'Virtual Network Gateway Name' ), '-PIP-01' ) ) ) ) ) ) ]"
+				},
+				"getPIPAllocationArray":
+				{
+					"parameters":
+					[
+						{
+							"type": "int",
+							"name": "Number Of VMs"
+						},
+						{
+							"type": "int",
+							"name": "VM Index"
+						}
+					],
+					"output": "[ if( less( parameters( 'VM Index' ), parameters( 'Number Of VMs' ) ), 'Static', 'Dynamic' ) ]"
+				},
+				"getNICNameArray":
+				{
+					"parameters":
+					[
+						{
+							"type": "string",
+							"name": "Company Prefix Upper"
+						},
+						{
+							"type": "int",
+							"name": "Number Of DCs"
+						},
+						{
+							"type": "int",
+							"name": "Number Of RDSs"
+						},
+						{
+							"type": "int",
+							"name": "Number Of FSs"
+						},
+						{
+							"type": "int",
+							"name": "Number Of SQLs"
+						},
+						{
+							"type": "int",
+							"name": "Number Of Customs"
+						},
+						{
+							"type": "array",
+							"name": "Custom VM Names"
+						},
+						{
+							"type": "int",
+							"name": "VM Index"
+						}
+					],
+					"output": "[ if( less( parameters( 'VM Index' ), parameters( 'Number Of DCs' ) ), concat( parameters( 'Company Prefix Upper' ), '-DC-', padLeft( add( parameters( 'VM Index' ), 1 ), 2, '0' ), '-NIC-01' ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ),  parameters( 'Number Of RDSs' ) ) ), concat( parameters( 'Company Prefix Upper' ), '-RDS-', padLeft( sub( add( parameters( 'VM Index' ), 1 ), parameters( 'Number Of DCs' ) ), 2, '0' ), '-NIC-01' ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), parameters( 'Number Of FSs' ) ) ) ), concat( parameters( 'Company Prefix Upper' ), '-FS-', padLeft( sub( add( parameters( 'VM Index' ), 1 ), add( parameters( 'Number Of DCs' ), parameters( 'Number Of RDSs' ) ) ), 2, '0' ), '-NIC-01' ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), parameters( 'Number Of SQLs' ) ) ) ) ), concat( parameters( 'Company Prefix Upper' ), '-SQL-', padLeft( sub( add( parameters( 'VM Index' ), 1 ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), parameters( 'Number Of FSs' ) ) ) ), 2, '0' ), '-NIC-01' ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), add( parameters( 'Number Of SQLs' ), parameters( 'Number Of Customs' ) ) ) ) ) ), concat( parameters( 'Company Prefix Upper' ), parameters( 'Custom VM Names' )[ sub( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), parameters( 'Number Of SQLs' ) ) ) ) ) ], padLeft( sub( add( parameters( 'VM Index' ), 1 ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), parameters( 'Number Of SQLs' ) ) ) ) ), 2, '0' ), '-NIC-01' ), 'NIC-01' ) ) ) ) ) ]"
+				},
+				"getNICIPArray":
+				{
+					"parameters":
+					[
+						{
+							"type": "int",
+							"name": "Number Of DCs"
+						},
+						{
+							"type": "int",
+							"name": "Number Of RDSs"
+						},
+						{
+							"type": "int",
+							"name": "Number Of FSs"
+						},
+						{
+							"type": "int",
+							"name": "Number Of SQLs"
+						},
+						{
+							"type": "int",
+							"name": "Number Of Customs"
+						},
+						{
+							"type": "int",
+							"name": "VM Index"
+						}
+					],
+					"output": "[ if( less( parameters( 'VM Index' ), parameters( 'Number Of DCs' ) ), concat( '10.1.1.', if( equals( 'Number Of DCs', 0 ), add( parameters( 'VM Index' ), 4 ), add( parameters( 'VM Index' ), 4 ) ) ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), parameters( 'Number Of RDSs' ) ) ), concat( '10.1.1.', if( equals( 'Number Of DCs', 0 ), add( parameters( 'VM Index' ), 6 ), add( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), 4 ) ) ) ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), parameters( 'Number Of FSs' ) ) ) ), concat( '10.1.1.', if( equals( 'Number Of DCs', 0 ), add( parameters( 'VM Index' ), add( parameters( 'Number Of RDSs' ), 6 ) ), add( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), 4 ) ) ) ) ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), parameters( 'Number Of SQLs' ) ) ) ) ), concat( '10.1.1.', if( equals( 'Number Of DCs', 0 ), add( parameters( 'VM Index' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), 6 ) ) ), add( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), 4 ) ) ) ) ) ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), add( parameters( 'Number Of SQLs' ), parameters( 'Number Of Customs' ) ) ) ) ) ), concat( '10.1.1.', if( equals( 'Number Of DCs', 0 ), add( parameters( 'VM Index' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), add( parameters( 'Number Of SQLs' ), 6 ) ) ) ), add( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), add( parameters( 'Number Of SQLs' ), 4 ) ) ) ) ) ) ), '10.1.1.20' ) ) ) ) ) ]"
+				},
+				"getVMNameArray":
+				{
+					"parameters":
+					[
+						{
+							"type": "string",
+							"name": "Company Prefix Upper"
+						},
+						{
+							"type": "int",
+							"name": "Number Of DCs"
+						},
+						{
+							"type": "int",
+							"name": "Number Of RDSs"
+						},
+						{
+							"type": "int",
+							"name": "Number Of FSs"
+						},
+						{
+							"type": "int",
+							"name": "Number Of SQLs"
+						},
+						{
+							"type": "int",
+							"name": "Number Of Customs"
+						},
+						{
+							"type": "array",
+							"name": "Custom VM Names"
+						},
+						{
+							"type": "int",
+							"name": "VM Index"
+						}
+					],
+					"output":
+					{
+						"type": "string",
+						"value": "[ if( less( parameters(  'VM Index' ), parameters( 'Number Of DCs' ) ), concat( parameters( 'Company Prefix Upper' ), '-DC-', padLeft( add( parameters( 'VM Index' ), 1 ), 2, '0' ) ), if( less( parameters(  'VM Index' ), add( parameters( 'Number Of DCs' ), parameters( 'Number Of RDSs' ) ) ), concat( parameters( 'Company Prefix Upper' ), '-RDS-', padLeft( sub( add( parameters( 'VM Index' ), 1 ), parameters( 'Number Of DCs' ) ), 2, '0' ) ), if( less( parameters(  'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), parameters( 'Number Of FSs' ) ) ) ), concat( parameters( 'Company Prefix Upper' ), '-FS-', padLeft( sub( add( parameters( 'VM Index' ), 1 ), add( parameters( 'Number Of DCs' ), parameters( 'Number Of RDSs' ) ) ), 2, '0' ) ), if( less( parameters(  'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), parameters( 'Number Of SQLs' ) ) ) ) ), concat( parameters( 'Company Prefix Upper' ), '-SQL-', padLeft( sub( add( parameters( 'VM Index' ), 1 ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), parameters( 'Number Of FSs' ) ) ) ), 2, '0' ) ), if( less( parameters(  'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), add( parameters( 'Number Of SQLs' ), parameters( 'Number Of Customs' ) ) ) ) )  ), concat( parameters( 'Company Prefix Upper' ), parameters( 'Custom VM Names' )[ sub( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ) parameters( 'Number Of SQLs' ) ) ) ) ) ], padLeft( sub( add( parameters( 'VM Index' ), 1 ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), parameters( 'Number Of SQLs' ) ) ) ) ), 2, '0' ) ), 'VM' ) ) ) ) ) ]"
+					}
+				},
+				"getVMOSArray":
+				{
+					"parameters":
+					[
+						{
+							"type": "string",
+							"name": "Company Prefix Upper"
+						},
+						{
+							"type": "int",
+							"name": "Number Of DCs"
+						},
+						{
+							"type": "int",
+							"name": "Number Of RDSs"
+						},
+						{
+							"type": "int",
+							"name": "Number Of FSs"
+						},
+						{
+							"type": "int",
+							"name": "Number Of SQLs"
+						},
+						{
+							"type": "int",
+							"name": "Number Of Customs"
+						},
+						{
+							"type": "string",
+							"name": "DC OS"
+						},
+						{
+							"type": "string",
+							"name": "RDS OS"
+						},
+						{
+							"type": "string",
+							"name": "FS OS"
+						},
+						{
+							"type": "string",
+							"name": "SQL OS"
+						},
+						{
+							"type": "string",
+							"name": "Custom OS"
+						},
+						{
+							"type": "int",
+							"name": "VM Index"
+						}
+					],
+					"output":
+					{
+						"type": "string",
+						"value": "[ if( less( parameters( 'VM Index' ), parameters( 'Number Of DCs' ) ), parameters( 'DC OS' ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), parameters( 'Number Of RDSs' ) ) ), parameters( 'RDS OS' ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), parameters( 'Number Of FSs' ) ) ) ), parameters( 'FS OS' ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), parameters( 'Number Of SQLs' ) ) ) ) ), parameters( 'SQL OS' ), if( less( parameters(  'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), add( parameters( 'Number Of SQLs' ), parameters( 'Number Of Customs' ) ) ) ) ) ), parameters( 'Custom OS' ), '2016-Datacenter' ) ) ) ) ) ]"
+					}
+				},
+				"getVMDiskArray":
+				{
+					"parameters":
+					[
+						{
+							"type": "string",
+							"name": "Company Prefix Upper"
+						},
+						{
+							"type": "int",
+							"name": "Number Of DCs"
+						},
+						{
+							"type": "int",
+							"name": "Number Of RDSs"
+						},
+						{
+							"type": "int",
+							"name": "Number Of FSs"
+						},
+						{
+							"type": "int",
+							"name": "Number Of SQLs"
+						},
+						{
+							"type": "int",
+							"name": "Number Of Customs"
+						},
+						{
+							"type": "string",
+							"name": "VM Disk"
+						},
+						{
+							"type": "int",
+							"name": "VM Index"
+						}
+					],
+					"output":
+					{
+						"type": "string",
+						"value": "[ if( less( parameters( 'VM Index' ), parameters( 'Number Of DCs' ) ), if( and( equals( parameters( 'VM Disk' ), 'DC' ), equals( sub( add( parameters( 'VM Index' ), 1 ), parameters( 'Number Of DCs' ) ), 1 ) ), '_Disk', '' ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), parameters( 'Number Of RDSs' ) ) ), if( and( equals( parameters( 'VM Disk' ), 'RDS' ), equals( sub( add( parameters( 'VM Index' ), 1 ), add( parameters( 'Number Of DCs' ), parameters( 'Number Of RDSs' ) ) ), 1 ) ), '_Disk', '' ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), parameters( 'Number Of FSs' ) ) ) ), if( and( equals( parameters( 'VM Disk' ), 'FS' ), equals( sub( add( parameters( 'VM Index' ), 1 ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), parameters( 'Number Of FSs' ) ) ) ), 1 ) ), '_Disk', '' ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), parameters( 'Number Of SQLs' ) ) ) ) ), if( and( equals( parameters( 'VM Disk' ), 'SQL' ), equals( sub( add( parameters( 'VM Index' ), 1 ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), parameters( 'Number Of SQLs' ) ) ) ) ), 1 ) ), '_Disk', '' ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), add( parameters( 'Number Of SQLs' ), parameters( 'Number Of Customs' ) ) ) ) ) ), if( and( equals( parameters( 'VM Disk' ), 'Custom Server' ), equals( sub( add( parameters( 'VM Index' ), 1 ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), add( parameters( 'Number Of SQLs' ), parameters( 'Number Of Customs' ) ) ) ) ) ), 1 ) ), '_Disk', '' ), '' ) ) ) ) ) ]"
+					}
+				},
+				"getVMSizeArray":
+				{
+					"parameters":
+					[
+						{
+							"type": "int",
+							"name": "Number Of VMs"
+						},
+						{
+							"type": "int",
+							"name": "Number Of DCs"
+						},
+						{
+							"type": "int",
+							"name": "Number Of RDSs"
+						},
+						{
+							"type": "int",
+							"name": "Number Of FSs"
+						},
+						{
+							"type": "int",
+							"name": "Number Of SQLs"
+						},
+						{
+							"type": "int",
+							"name": "Number Of Customs"
+						},
+						{
+							"type": "string",
+							"name": "RDS Size"
+						},
+						{
+							"type": "int",
+							"name": "VM Index"
+						}
+					],
+					"output":
+					{
+						"type": "string",
+						"value": "[ if( less( parameters( 'VM Index' ), parameters( 'Number Of DCs' ) ), if( greater( sub( parameters( 'Number Of VMs' ), parameters( 'Number Of RDSs' ) ), 4 ), 'Standard_A2_v2', 'Standard_B2s' ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), parameters( 'Number Of RDSs' ) ) ), parameters( 'RDS Size' ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), parameters( 'Number Of FSs' ) ) ) ), if( greater( sub( parameters( 'Number Of VMs' ), parameters( 'Number Of RDSs' ) ), 4 ), 'Standard_A2_v2', 'Standard_B2s' ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), parameters( 'Number Of SQLs' ) ) ) ) ), if( greater( sub( parameters( 'Number Of VMs' ), parameters( 'Number Of RDSs' ) ), 4 ), 'Standard_A2_v2', 'Standard_B2s' ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), add( parameters( 'Number Of SQLs' ), parameters( 'Number Of Customs' ) ) ) ) ) ), if( greater( sub( parameters( 'Number Of VMs' ), parameters( 'Number Of RDSs' ) ), 4 ), 'Standard_A2_v2', 'Standard_B2s' ), '' ) ) ) ) ) ]"
+					}
+				},
+				"getVMAvailabilitySetArray":
+				{
+					"parameters":
+					[
+						{
+							"type": "int",
+							"name": "Number Of DCs"
+						},
+						{
+							"type": "string",
+							"name": "Availability Set Id"
+						},
+						{
+							"type": "int",
+							"name": "VM Index"
+						}
+					],
+					"output":
+					{
+						"type": "string",
+						"value": "[ if( less( parameters( 'VM Index' ), parameters( 'Number Of DCs' ) ), '[ parameters( 'Availability Set Id' ) ]', '0' ) ]"
+					}
+				}
+
+			}
+		}
 	],
 	"resources":
 	[
@@ -60,10 +742,13 @@
 						"value": "[ variables( 'DiagnosticStorageAccountName' ) ]"
 					}
 				}
-			}
+			},
+			"dependsOn":
+			[
+			]
 		},
 		{
-			"condition": "[ equals( parameters( 'Using Domain Services' ), 'true' ) ]",
+			"condition": "[ equals( parameters( 'Using Domain Services' ), 'false' ) ]",
 			"comments": "Deployment of Network Security Group",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2017-05-10",
@@ -79,13 +764,17 @@
 				{
 					"Virtual Network Subnet NSG Name":
 					{
-						"value": "[ variables( 'VirtualNetworkName' ) ]"
+						"value": "[ variables( 'VirtualNetworkSubnetNSGName' ) ]"
 					}
 				}
-			}
+			},
+			"dependsOn":
+			[
+			]
 		},
 		{
-			"comments": "Deployment for Virtual Network",
+			"condition": "[ equals( parameters( 'Using Domain Services' ), 'true' ) ]",
+			"comments": "Deployment for Virtual Network without NSG",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2017-05-10",
 			"name": "LinkedTemplate_VirtualNetwork",
@@ -114,26 +803,415 @@
 			},
 			"dependsOn":
 			[
+			]
+		},
+		{
+			"condition": "[ equals( parameters( 'Using Domain Services' ), 'false' ) ]",
+			"comments": "Deployment for Virtual Network with NSG",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2017-05-10",
+			"name": "LinkedTemplate_VirtualNetwork",
+			"properties":
+			{
+				"mode": "Incremental",
+				"templateLink":
+				{
+					"uri": "https://raw.githubusercontent.com/GavinCormack/AzureTemplates/master/JSON/Template_VirtualNetwork_NSG.json"
+				},
+				"parameters":
+				{
+					"Virtual Network Name":
+					{
+						"value": "[ variables( 'VirtualNetworkName' ) ]"
+					},
+					"Virtual Network Subnet Name":
+					{
+						"value": "[ variables( 'VirtualNetworkSubnetName' ) ]"
+					},
+					"Virtual Network Subnet NSG Name":
+					{
+						"value": "[ variables( 'VirtualNetworkSubnetNSGName' ) ]"
+					}
+				}
+			},
+			"dependsOn":
+			[
 				"LinkedTemplate_NetworkSecurityGroup"
+			]
+		},
+		{
+			"comments": "Deployment for Local Network Gateway",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2017-05-10",
+			"name": "LinkedTemplate_LocalNetworkGateway",
+			"properties":
+			{
+				"mode": "Incremental",
+				"templateLink":
+				{
+					"uri": "https://raw.githubusercontent.com/GavinCormack/AzureTemplates/master/JSON/Template_LocalNetworkGateway.json"
+				},
+				"parameters":
+				{
+					"Local Network Gateway Name":
+					{
+						"value": "[ variables( 'LocalNetworkGatewayName' ) ]"
+					},
+					"Current System IP Range":
+					{
+						"value": "[ parameters( 'Current System IP Range' ) ]"
+					},
+					"Current System External IP":
+					{
+						"value": "[ parameters( 'Current System External IP' ) ]"
+					}
+				}
+			},
+			"dependsOn":
+			[
+			]
+		},
+		{
+			"comments": "Deployment for Virtual Network Gateway with Domain Services",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2017-05-10",
+			"name": "LinkedTemplate_VirtualNetworkGateway",
+			"properties":
+			{
+				"mode": "Incremental",
+				"templateLink":
+				{
+					"uri": "https://raw.githubusercontent.com/GavinCormack/AzureTemplates/master/JSON/Template_VirtualNetworkGateway.json"
+				},
+				"parameters":
+				{
+					"Virtual Network Gateway Name":
+					{
+						"value": "[ variables( 'VirtualNetworkGatewayName' ) ]"
+					},
+					"Virtual Network Gateway PIP ID":
+					{
+						"value": "[ resourceId( 'Microsoft.Network/publicIPAddresses', concat( variables( 'VirtualNetworkGatewayName' ), '-PIP' ) ) ]"
+					},
+					"Virtual Network Subnet ID":
+					{
+						"value": "[ reference( 'LinkedTemplate_VirtualNetwork' ).outputs.resourceId.value ]"
+					}
+				}
+			},
+			"dependsOn":
+			[
+				"LinkedTemplate_VirtualNetwork",
+				"PIPLoop"
+			]
+		},
+		{
+			"comments": "Deployment for Connection between Virtual Network Gateway and Local Network Gateway",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2017-05-10",
+			"name": "LinkedTemplate_Connection",
+			"properties":
+			{
+				"mode": "Incremental",
+				"templateLink":
+				{
+					"uri": "https://raw.githubusercontent.com/GavinCormack/AzureTemplates/master/JSON/Template_Connection.json"
+				},
+				"parameters":
+				{
+					"Connection Name":
+					{
+						"value": "[ variables( 'ConnectionName' ) ]"
+					},
+					"VPN Shared Key":
+					{
+						"value": "[ parameters( 'VPN Shared Key' ) ]"
+					},
+					"Virtual Network Gateway ID":
+					{
+						"value": "[ reference( 'LinkedTemplate_VirtualNetworkGateway' ).outputs.resourceId.value ]"
+					},
+					"Local Network Gateway ID":
+					{
+						"value": "[ reference( 'LinkedTemplate_LocalNetworkGateway' ).outputs.resourceId.value ]"
+					}
+				}
+			},
+			"dependsOn":
+			[
+				"LinkedTemplate_VirtualNetworkGateway",
+				"LinkedTemplate_LocalNetworkGateway"
+			]
+		},
+		{
+			"condition": "[ equals( parameters( 'Using Domain Services' ), 'false' ) ]",
+			"comments": "Deployment for Availability Set",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2017-05-10",
+			"name": "LinkedTemplate_AvailabilitySet",
+			"properties":
+			{
+				"mode": "Incremental",
+				"templateLink":
+				{
+					"uri": "https://raw.githubusercontent.com/GavinCormack/AzureTemplates/master/JSON/Template_AvailabilitySet.json"
+				},
+				"parameters":
+				{
+					"Availability Set Name":
+					{
+						"value": "[ variables( 'AvailabilitySetName' ) ]"
+					}
+				}
+			},
+			"dependsOn":
+			[
+			]
+		},
+		{
+			"comments": "Deployment of PIP",
+			"copy":
+			{
+				"name": "PIPLoop",
+				"count": "[ variables( 'NumberOfPIPs' ) ]"
+			},
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2017-05-10",
+			"name": "[ concat( 'LinkedTemplate_PIP', copyIndex() ) ]",
+			"properties":
+			{
+				"mode": "Incremental",
+				"templateLink":
+				{
+					"uri": "https://raw.githubusercontent.com/GavinCormack/AzureTemplates/master/JSON/Template_PIP.json"
+				},
+				"parameters":
+				{
+					"PIP Name":
+					{
+						"value": "[ GavFunctions.getPIPNameArray( variables( 'CompanyPrefixUpper' ), variables( 'NumberOfDCServers' ), parameters( 'Number of RDS Servers' ), parameters( 'Number of FS Servers' ), parameters( 'Number of SQL Servers' ), parameters( 'Number of Custom Servers' ), parameters( 'Array of Custom Server Names' ), variables( 'VirtualNetworkGatewayName' ), copyIndex() ) ]"
+					},
+					"PIP Allocation":
+					{
+						"value": "[ GavFunctions.getPIPAllocationArray( variables( 'NumberOfVMs' ),  copyIndex() ) ]"
+					}
+				}
+			},
+			"dependsOn":
+			[
+			]
+		},
+		{
+			"comments": "Deployment of NIC",
+			"copy":
+			{
+				"name": "NICLoop",
+				"count": "[ variables( 'NumberOfVMs' ) ]"
+			},
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2017-05-10",
+			"name": "[ concat( 'LinkedTemplate_NIC', copyIndex() ) ]",
+			"properties":
+			{
+				"mode": "Incremental",
+				"templateLink":
+				{
+					"uri": "https://raw.githubusercontent.com/GavinCormack/AzureTemplates/master/JSON/Template_NIC.json"
+				},
+				"parameters":
+				{
+					"NIC Name":
+					{
+						"value": "[ GavFunctions.getNICNameArray( variables( 'CompanyPrefixUpper' ), variables( 'NumberOfDCServers' ), parameters( 'Number of RDS Servers' ), parameters( 'Number of FS Servers' ), parameters( 'Number of SQL Servers' ), parameters( 'Number of Custom Servers' ), parameters( 'Array of Custom Server Names' ), copyIndex() ) ]"
+					},
+					"NIC IP":
+					{
+						"value": "[ GavFunctions.getNICIPArray( variables( 'NumberOfDCServers' ), parameters( 'Number of RDS Servers' ), parameters( 'Number of FS Servers' ), parameters( 'Number of SQL Servers' ), parameters( 'Number of Custom Servers' ), parameters( 'Array of Custom Server Names' ), copyIndex() ) ]"
+					},
+					"PIP ID":
+					{
+						"value": "[  reference( concat( 'LinkedTemplate_PIP', copyIndex() ) ).outputs.resourceId.value ] ]"
+					},
+					"Virtual Network Name":
+					{
+						"value": "[ variabless( 'VirtualNetworkName' ) ]"
+					},
+					"Virtual Network Subnet Name":
+					{
+						"value": "[ variabless( 'VirtualNetworkSubnetName' ) ]"
+					}
+				}
+			},
+			"dependsOn":
+			[
+				"PIPLoop",
+				"LinkedTemplate_VirtualNetwork"
+			]
+		},
+		{
+			"comments": "Deployment of Virtual Machine",
+			"copy":
+			{
+				"name": "VirtualMachineLoop",
+				"count": "[ variables( 'NumberOfVMs' ) ]"
+			},
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2017-05-10",
+			"name": "[ concat( 'LinkedTemplate_VirtualMachine', copyIndex() ) ]",
+			"properties":
+			{
+				"mode": "Incremental",
+				"templateLink":
+				{
+					"uri": "[ concat( 'https://raw.githubusercontent.com/GavinCormack/AzureTemplates/master/JSON/Template_VirtualMachine', GavFunctions.getVMDiskArray( variables( 'CompanyPrefixUpper' ), variables( 'NumberOfDCServers' ), parameters( 'Number of RDS Servers' ), parameters( 'Number of FS Servers' ), parameters( 'Number of SQL Servers' ), parameters( 'Number of Custom Servers' ), copyIndex() ) ,'.json' ) ]"
+				},
+				"parameters":
+				{
+					"Virtual Machine Name":
+					{
+						"value": "[ GavFunctions.getVMNameArray( variables( 'CompanyPrefixUpper' ), variables( 'NumberOfDCServers' ), parameters( 'Number of RDS Servers' ), parameters( 'Number of FS Servers' ), parameters( 'Number of SQL Servers' ), parameters( 'Number of Custom Servers' ), parameters( 'Array of Custom Server Names' ), copyIndex() ) ]"
+					},
+					"Virtual Machine OS":
+					{
+						"value": "[ GavFunctions.getVMOSArray( variables( 'CompanyPrefixUpper' ), variables( 'NumberOfDCServers' ), parameters( 'Number of RDS Servers' ), parameters( 'Number of FS Servers' ), parameters( 'Number of SQL Servers' ), parameters( 'Number of Custom Servers' ), parameters( 'DC Server OS Version' ), parameters( 'RDS Server OS Version' ), parameters( 'FS Server OS Version' ), parameters( 'SQL Server OS Version' ), parameters( 'Custom Server OS Version' ), copyIndex() ) ]"
+					},
+					"Virtual Machine Size":
+					{
+						"value": "[ GavFunctions.getVMSizeArray( variables( 'NumberOfDCServers' ), parameters( 'Number of RDS Servers' ), parameters( 'Number of FS Servers' ), parameters( 'Number of SQL Servers' ), parameters( 'Number of Custom Servers' ), parameters( 'Size of RDS Server' ), copyIndex() ) ]"
+					},
+					"Availability Set ID":
+					{
+						"value": "[ GavFunctions.getVMAvailabilitySetArray( variables( 'NumberOfDCServers' ), reference( 'LinkedTemplate_AvailabilitySet' ).outputs.resourceId.value, copyIndex() ) ]"
+					},
+					"Diagnostic Storage Account Name":
+					{
+						"value": "[ variables( 'DiagnosticStorageAccountName' ) ]"
+					},
+					"Virtual Machine NIC ID":
+					{
+						"value": "[ reference( concat( 'LinkedTemplate_NIC', copyIndex() ) ).outputs.resourceId.value ]"
+					},
+					"Virtual Machine Data Disk Size":
+					{
+						"value": "[ parameters( 'Size Of Data Disks' ) ]"
+					},
+					"Local Admin Password":
+					{
+						"value": "[ parameters( 'Local Admin Password Admin Password' ) ]"
+					}
+				}
+			},
+			"dependsOn":
+			[
+				"NICLoop",
+				"LinkedTemplate_StorageAccount"
+			]
+		},
+		{
+			"condition": "[ equals( parameters( 'Using Domain Services' ), 'true' ) ]",
+			"comment": "Deployment for Domain Services",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2017-05-10",
+			"name": "LinkedTemplate_DomainServices",
+			"properties":
+			{
+				"mode": "Incremental",
+				"templateLink":
+				{
+					"uri": "https://raw.githubusercontent.com/GavinCormack/AzureTemplates/master/JSON/Template_DomainServices.json"
+				},
+				"parameters":
+				{
+					"Domain Name":
+					{
+						"value": "[ parameters( 'Domain Name' ) ]"
+					},
+					"Virtual Network ID":
+					{
+						"value": "[ reference( 'LinkedTemplate_VirtualNetwork' ).outputs.resourceId.value ]"
+					},
+					"Virtual Network Subnet ID":
+					{
+						"value": "[ resourceId( 'Microsoft.Network/virtualNetworks/subnets', variables( 'VirtualNetworkName' ), variables( 'VirtualNetworkSubnetName' ) ) ]"
+					}
+				}
+			},
+			"dependsOn":
+			[
 			]
 		}
 	],
 	"outputs":
 	{
+		"resourceId_StorageAccount":
+		{
+			"type": "string",
+			"value": "[ reference( 'LinkedTemplate_StorageAccount' ).outputs.resourceId.value ]"
+		},
 		"resourceInfo_StorageAccount":
 		{
-			"value": "[ reference( 'LinkedTemplate_StorageAccount' ).outputs.resourceInfo.value ]",
-			"type": "object"
+			"type": "object",
+			"value": "[ reference( 'LinkedTemplate_StorageAccount' ).outputs.resourceInfo.value ]"
+		},
+		"resourceId_NetworkSecurityGroup":
+		{
+			"type": "string",
+			"value": "[ reference( 'LinkedTemplate_NetworkSecurityGroup' ).outputs.resourceId.value ]"
 		},
 		"resourceInfo_NetworkSecurityGroup":
 		{
-			"value": "[ reference( 'LinkedTemplate_NetworkSecurityGroup' ).outputs.resourceInfo.value ]",
-			"type": "object"
+			"type": "object",
+			"value": "[ reference( 'LinkedTemplate_NetworkSecurityGroup' ).outputs.resourceInfo.value ]"
+		},
+		"resourceId_VirtualNetwork":
+		{
+			"type": "string",
+			"value": "[ reference( 'LinkedTemplate_VirtualNetwork' ).outputs.resourceId.value ]"
 		},
 		"resourceInfo_VirtualNetwork":
 		{
-			"value": "[ reference( 'LinkedTemplate_VirtualNetwork' ).outputs.resourceInfo.value ]",
-			"type": "object"
+			"type": "object",
+			"value": "[ reference( 'LinkedTemplate_VirtualNetwork' ).outputs.resourceInfo.value ]"
+		},
+		"resourceId_LocalNetworkGateway":
+		{
+			"type": "string",
+			"value": "[ reference( 'LinkedTemplate_LocalNetworkGateway' ).outputs.resourceId.value ]"
+		},
+		"resourceInfo_LocalNetworkGateway":
+		{
+			"type": "object",
+			"value": "[ reference( 'LinkedTemplate_LocalNetworkGateway' ).outputs.resourceInfo.value ]"
+		},
+		"resourceId_VirtualNetworkGateway":
+		{
+			"type": "string",
+			"value": "[ reference( 'LinkedTemplate_VirtualNetworkGateway' ).outputs.resourceId.value ]"
+		},
+		"resourceInfo_VirtualNetworkGateway":
+		{
+			"type": "object",
+			"value": "[ reference( 'LinkedTemplate_VirtualNetworkGateway' ).outputs.resourceInfo.value ]"
+		},
+		"resourceId_Connection":
+		{
+			"type": "string",
+			"value": "[ reference( 'LinkedTemplate_Connection' ).outputs.resourceId.value ]"
+		},
+		"resourceInfo_Connection":
+		{
+			"type": "object",
+			"value": "[ reference( 'LinkedTemplate_Connection' ).outputs.resourceInfo.value ]"
+		},
+		"resourceId_AvailabilitySet":
+		{
+			"type": "string",
+			"value": "[ reference( 'LinkedTemplate_AvailabilitySet' ).outputs.resourceId.value ]"
+		},
+		"resourceInfo_AvailabilitySet":
+		{
+			"type": "object",
+			"value": "[ reference( 'LinkedTemplate_AvailabilitySet' ).outputs.resourceInfo.value ]"
 		}
 	}
 }

@@ -1,0 +1,68 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters":
+	{
+		"Connection Name":
+		{
+			"type": "string"
+		},
+		"VPN Shared Key":
+		{
+			"type": "string"
+		},
+		"Virtual Network Gateway ID":
+		{
+			"type": "string"
+		},
+		"Local Network Gateway ID":
+		{
+			"type": "string"
+		}
+	},
+	"variables":
+	{
+	},
+	"functions":
+	[
+	],
+	"resources":
+	[
+		{
+			"comments": "Connection between Gateways",
+			"type": "Microsoft.Network/connections",
+			"apiVersion": "2018-08-01",
+			"name": "[ parameters( 'Connection Name' ) ]",
+			"location": "[ resourceGroup().location ]",
+			"properties":
+			{
+				"virtualNetworkGateway1":
+				{
+					"id": "[ parameters( 'Virtual Network Gateway ID' ) ]"
+				},
+				"localNetworkGateway2":
+				{
+					"id": "[ parameters( 'Local Network Gateway ID' ) ]"
+				},
+				"connectionType": "IPsec",
+				"sharedKey": "[ parameters( 'VPN Shared Key' ) ]"
+			},
+			"dependsOn":
+			[
+			]
+		}
+	],
+	"outputs":
+	{
+		"resourceId":
+		{
+			"type": "string",
+			"value": "[ resourceId( 'Microsoft.Network/connections', parameters( 'Connection Name' ) ) ]"
+		},
+		"resourceInfo":
+		{
+			"value": "[ reference( concat( 'Microsoft.Network/connections/', parameters( 'Connection Name' ) ), providers( 'Microsoft.Network', 'connections' ).apiVersions[ 0 ] ) ]",
+			"type": "object"
+		}
+	}
+}

@@ -1,0 +1,85 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters":
+	{
+		"NIC Name":
+		{
+			"type": "string"
+		},
+		"NIC IP":
+		{
+			"type": "string"
+		},
+		"PIP ID":
+		{
+			"type": "string"
+		},
+		"Virtual Network Name":
+		{
+			"type": "string"
+		},
+		"Virtual Network Subnet Name":
+		{
+			"type": "string"
+		}
+
+	},
+	"variables":
+	{
+	},
+	"functions":
+	[
+	],
+	"resources":
+	[
+		{
+			"comments": "NIC",
+			"type": "Microsoft.Network/networkInterfaces",
+			"apiVersion": "2018-08-01",
+			"name": "[ parameters( 'NIC Name' ) ]",
+			"location": "[ resourceGroup().location ]",
+			"properties":
+			{
+				"ipConfigurations":
+				[
+					{
+						"name": "ipconfig1",
+						"properties":
+						{
+							"primary": true,
+							"privateIPAddress": "[ parameters( 'NIC IP' ) ]",
+							"privateIPAddressVersion": "IPv4",
+							"privateIPAllocationMethod": "Static",
+							"publicIPAddress":
+							{
+								"id": "[ parameters( 'PIP ID' ) ]"
+							},
+							"subnet":
+							{
+								"id": "[ resourceId( 'Microsoft.Network/virtualNetworks/subnets', parameters( 'Virtual Network Name' ), parameters( 'Virtual Network Subnet Name' ) ) ]"
+							}
+						}
+					}
+				],
+				"primary": true
+			},
+			"dependsOn":
+			[
+			]
+		}
+	],
+	"outputs":
+	{
+		"resourceId":
+		{
+			"type": "string",
+			"value": "[ resourceId( 'Microsoft.Network/networkInterfaces', parameters( 'NIC Name' ) ) ]"
+		},
+		"resourceInfo":
+		{
+			"type": "object",
+			"value": "[ reference( concat( 'Microsoft.Network/networkInterfaces/', parameters( 'NIC Name' ) ), providers( 'Microsoft.Network', 'networkInterfaces' ).apiVersions[ 0 ] ) ]"
+		}
+	}
+}

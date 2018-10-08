@@ -1,0 +1,48 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters":
+	{
+		"Availability Set Name":
+		{
+			"type": "string"
+		}
+	},
+	"variables":
+	{
+	},
+	"functions":
+	[
+	],
+	"resources":
+	[
+		{
+			"comments": "Availability Set",
+			"type": "Microsoft.Compute/availabilitySets",
+			"apiVersion": "2017-03-30",
+			"name": "[ parameters( 'Availability Set Name' ) ]",
+			"location": "[ resourceGroup().location ]",
+			"properties":
+			{
+				"platformFaultDomainCount": 3,
+				"platformUpdateDomainCount": 5
+			},
+			"dependsOn":
+			[
+			]
+		}
+	],
+	"outputs":
+	{
+		"resourceId":
+		{
+			"type": "string",
+			"value": "[ resourceId( 'Microsoft.Compute/availabilitySets', parameters( 'Availability Set Name' ) ) ]"
+		},
+		"resourceInfo":
+		{
+			"type": "object",
+			"value": "[ reference( concat( 'Microsoft.Compute/availabilitySets/', parameters( 'Availability Set Name' ) ), providers( 'Microsoft.Compute', 'availabilitySets' ).apiVersions[ 0 ] ) ]"
+		}
+	}
+}
