@@ -409,7 +409,7 @@
 					"output":
 					{
 						"type": "string",
-						"value": "[ if( less( parameters( 'VM Index' ), parameters( 'Number Of DCs' ) ), concat( parameters( 'Company Prefix Upper' ), '-DC-', padLeft( add( parameters( 'VM Index' ), 1 ), 2, '0' ), '-PIP-01' ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ),  parameters( 'Number Of RDSs' ) ) ), concat( parameters( 'Company Prefix Upper' ), '-RDS-', padLeft( sub( add( parameters( 'VM Index' ), 1 ), parameters( 'Number Of DCs' ) ), 2, '0' ), '-PIP-01' ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), parameters( 'Number Of FSs' ) ) ) ), concat( parameters( 'Company Prefix Upper' ), '-FS-', padLeft( sub( add( parameters( 'VM Index' ), 1 ), add( parameters( 'Number Of DCs' ), parameters( 'Number Of RDSs' ) ) ), 2, '0' ), '-PIP-01' ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), parameters( 'Number Of SQLs' ) ) ) ) ), concat( parameters( 'Company Prefix Upper' ), '-SQL-', padLeft( sub( add( parameters( 'VM Index' ), 1 ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), parameters( 'Number Of FSs' ) ) ) ), 2, '0' ), '-PIP-01' ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), add( parameters( 'Number Of SQLs' ), parameters( 'Number Of Customs' ) ) ) ) ) ), concat( parameters( 'Company Prefix Upper' ), parameters( 'Custom VM Names' )[ sub( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), parameters( 'Number Of SQLs' ) ) ) ) ) ], padLeft( sub( add( parameters( 'VM Index' ), 1 ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), parameters( 'Number Of SQLs' ) ) ) ) ), 2, '0' ), '-PIP-01' ), concat( parameters( 'Virtual Network Gateway Name' ), '-PIP-01' ) ) ) ) ) ) ]"
+						"value": "[ if( less( parameters( 'VM Index' ), parameters( 'Number Of DCs' ) ), concat( parameters( 'Company Prefix Upper' ), '-DC-', padLeft( add( parameters( 'VM Index' ), 1 ), 2, '0' ), '-PIP-01' ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ),  parameters( 'Number Of RDSs' ) ) ), concat( parameters( 'Company Prefix Upper' ), '-RDS-', padLeft( sub( add( parameters( 'VM Index' ), 1 ), parameters( 'Number Of DCs' ) ), 2, '0' ), '-PIP-01' ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), parameters( 'Number Of FSs' ) ) ) ), concat( parameters( 'Company Prefix Upper' ), '-FS-', padLeft( sub( add( parameters( 'VM Index' ), 1 ), add( parameters( 'Number Of DCs' ), parameters( 'Number Of RDSs' ) ) ), 2, '0' ), '-PIP-01' ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), parameters( 'Number Of SQLs' ) ) ) ) ), concat( parameters( 'Company Prefix Upper' ), '-SQL-', padLeft( sub( add( parameters( 'VM Index' ), 1 ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), parameters( 'Number Of FSs' ) ) ) ), 2, '0' ), '-PIP-01' ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), add( parameters( 'Number Of SQLs' ), parameters( 'Number Of Customs' ) ) ) ) ) ), concat( parameters( 'Company Prefix Upper' ), parameters( 'Custom VM Names' )[ sub( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), parameters( 'Number Of SQLs' ) ) ) ) ) ], padLeft( sub( add( parameters( 'VM Index' ), 1 ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), parameters( 'Number Of SQLs' ) ) ) ) ), 2, '0' ), '-PIP-01' ), concat( parameters( 'Virtual Network Gateway Name' ), '-PIP' ) ) ) ) ) ) ]"
 					}
 				},
 				"getPIPAllocationArray":
@@ -864,7 +864,7 @@
 					},
 					"Virtual Network Subnet ID":
 					{
-						"value": "[ resourceId( 'Microsoft.Network/virtualNetworks/subnets', parameters( 'Virtual Network Name' ), parameters( 'Virtual Network Subnet Name' ) ) ]"
+						"value": "[ resourceId( 'Microsoft.Network/virtualNetworks/subnets', variables( 'VirtualNetworkName' ), 'GatewaySubnet' ) ]"
 					}
 				}
 			},
@@ -1046,7 +1046,7 @@
 					},
 					"Virtual Machine Size":
 					{
-						"value": "[ GavFunctions.getVMSizeArray( variables( 'NumberOfDCServers' ), parameters( 'Number of RDS Servers' ), parameters( 'Number of FS Servers' ), parameters( 'Number of SQL Servers' ), parameters( 'Number of Custom Servers' ), parameters( 'Size of RDS Server' ), copyIndex() ) ]"
+						"value": "[ GavFunctions.getVMSizeArray( variables( 'NumberOfVMs' ), variables( 'NumberOfDCServers' ), parameters( 'Number of RDS Servers' ), parameters( 'Number of FS Servers' ), parameters( 'Number of SQL Servers' ), parameters( 'Number of Custom Servers' ), parameters( 'Size of RDS Server' ), copyIndex() ) ]"
 					},
 					"Availability Set ID":
 					{
@@ -1062,11 +1062,11 @@
 					},
 					"Virtual Machine Data Disk Size":
 					{
-						"value": "[ parameters( 'Size Of Data Disks' ) ]"
+						"value": "[ parameters( 'Size Of Data Disk' ) ]"
 					},
 					"Local Admin Password":
 					{
-						"value": "[ parameters( 'Local Admin Password Admin Password' ) ]"
+						"value": "[ parameters( 'Local Admin Password' ) ]"
 					}
 				}
 			},
