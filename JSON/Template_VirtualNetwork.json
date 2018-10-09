@@ -78,7 +78,7 @@
 		"resourceId":
 		{
 			"type": "string",
-			"value": "[ resourceId( 'Microsoft.Network/virtuaNetworks', parameters( 'Virtual Network Name' ) ) ]"
+			"value": "[ resourceId( 'Microsoft.Network/virtualNetworks', parameters( 'Virtual Network Name' ) ) ]"
 		}
 	}
 }
