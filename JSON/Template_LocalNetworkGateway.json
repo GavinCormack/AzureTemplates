@@ -49,11 +49,6 @@
 		{
 			"type": "string",
 			"value": "[ resourceId( 'Microsoft.Network/localNetworkGateways', parameters( 'Local Network Gateway Name' ) ) ]"
-		},
-		"resourceInfo":
-		{
-			"value": "[ reference( concat( 'Microsoft.Network/localNetworkGateways/', parameters( 'Local Network Gateway Name' ) ), providers( 'Microsoft.Network', 'localNetworkGateways' ).apiVersions[ 0 ] ) ]",
-			"type": "object"
 		}
 	}
 }

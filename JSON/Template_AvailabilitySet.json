@@ -38,11 +38,6 @@
 		{
 			"type": "string",
 			"value": "[ resourceId( 'Microsoft.Compute/availabilitySets', parameters( 'Availability Set Name' ) ) ]"
-		},
-		"resourceInfo":
-		{
-			"type": "object",
-			"value": "[ reference( concat( 'Microsoft.Compute/availabilitySets/', parameters( 'Availability Set Name' ) ), providers( 'Microsoft.Compute', 'availabilitySets' ).apiVersions[ 0 ] ) ]"
 		}
 	}
 }

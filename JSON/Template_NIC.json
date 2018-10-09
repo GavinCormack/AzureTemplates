@@ -75,11 +75,6 @@
 		{
 			"type": "string",
 			"value": "[ resourceId( 'Microsoft.Network/networkInterfaces', parameters( 'NIC Name' ) ) ]"
-		},
-		"resourceInfo":
-		{
-			"type": "object",
-			"value": "[ reference( concat( 'Microsoft.Network/networkInterfaces/', parameters( 'NIC Name' ) ), providers( 'Microsoft.Network', 'networkInterfaces' ).apiVersions[ 0 ] ) ]"
 		}
 	}
 }

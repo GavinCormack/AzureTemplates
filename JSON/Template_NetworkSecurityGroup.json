@@ -144,11 +144,6 @@
 		{
 			"type": "string",
 			"value": "[ resourceId( 'Microsoft.Network/networkSecurityGroups', parameters( 'Virtual Network Subnet NSG Name' ) ) ]"
-		},
-		"resourceInfo":
-		{
-			"value": "[ reference( concat( 'Microsoft.Network/networkSecurityGroups/', parameters( 'Virtual Network Subnet NSG Name' ) ), providers( 'Microsoft.Network', 'networkSecurityGroups' ).apiVersions[ 0 ] ) ]",
-			"type": "object"
 		}
 	}
 }

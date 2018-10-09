@@ -46,11 +46,6 @@
 		{
 			"type": "string",
 			"value": "[ resourceId( 'Microsoft.Network/publicIPAddresses', parameters( 'PIP Name' ) ) ]"
-		},
-		"resourceInfo":
-		{
-			"type": "object",
-			"value": "[ reference( concat( 'Microsoft.Network/publicIPAddresses/', parameters( 'PIP Name' ) ), providers( 'Microsoft.Network', 'publicIPAddresses' ).apiVersions[ 0 ] ) ]"
 		}
 	}
 }

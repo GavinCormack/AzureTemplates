@@ -47,11 +47,6 @@
 		{
 			"type": "string",
 			"value": "[ resourceId( 'Microsoft.Compute/virtualMachines', parameters( 'Virtual Machine Name' ) ) ]"
-		},
-		"resourceInfo":
-		{
-			"value": "[ reference( concat( 'Microsoft.Compute/virtualMachines/', parameters( 'Virtual Machine Name' ) ), providers( 'Microsoft.Compute', 'virtualMachines' ).apiVersions[ 0 ] ) ]",
-			"type": "object"
 		}
 	}
 }

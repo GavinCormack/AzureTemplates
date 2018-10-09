@@ -58,11 +58,6 @@
 		{
 			"type": "string",
 			"value": "[ resourceId( 'Microsoft.Network/connections', parameters( 'Connection Name' ) ) ]"
-		},
-		"resourceInfo":
-		{
-			"value": "[ reference( concat( 'Microsoft.Network/connections/', parameters( 'Connection Name' ) ), providers( 'Microsoft.Network', 'connections' ).apiVersions[ 0 ] ) ]",
-			"type": "object"
 		}
 	}
 }

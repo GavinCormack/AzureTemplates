@@ -78,11 +78,6 @@
 		{
 			"type": "string",
 			"value": "[ resourceId( 'Microsoft.Network/virtualNetworkGateways', parameters( 'Virtual Network Gateway Name' ) ) ]"
-		},
-		"resourceInfo":
-		{
-			"value": "[ reference( concat( 'Microsoft.Network/virtualNetworkGateways/', parameters( 'Virtual Network Gateway Name' ) ), providers( 'Microsoft.Network', 'virtualNetworkGateways' ).apiVersions[ 0 ] ) ]",
-			"type": "object"
 		}
 	}
 }
