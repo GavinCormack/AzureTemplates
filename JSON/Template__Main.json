@@ -864,7 +864,7 @@
 					},
 					"Virtual Network Subnet ID":
 					{
-						"value": "[ reference( 'LinkedTemplate_VirtualNetwork' ).outputs.resourceId.value ]"
+						"value": "[ resourceId( 'Microsoft.Network/virtualNetworks/subnets', parameters( 'Virtual Network Name' ), parameters( 'Virtual Network Subnet Name' ) ) ]"
 					}
 				}
 			},
