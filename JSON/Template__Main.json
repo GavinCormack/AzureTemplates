@@ -1129,22 +1129,22 @@
 		{
 			"type": "string",
 			"value": "[ reference( 'LinkedTemplate_StorageAccount' ).outputs.resourceId.value ]"
-		}
+		},
 		"resourceId_NetworkSecurityGroup":
 		{
 			"type": "string",
 			"value": "[ reference( 'LinkedTemplate_NetworkSecurityGroup' ).outputs.resourceId.value ]"
-		}
+		},
 		"resourceId_VirtualNetwork":
 		{
 			"type": "string",
 			"value": "[ reference( 'LinkedTemplate_VirtualNetwork' ).outputs.resourceId.value ]"
-		}
+		},
 		"resourceId_LocalNetworkGateway":
 		{
 			"type": "string",
 			"value": "[ reference( 'LinkedTemplate_LocalNetworkGateway' ).outputs.resourceId.value ]"
-		}
+		},
 		"resourceId_VirtualNetworkGateway":
 		{
 			"type": "string",
