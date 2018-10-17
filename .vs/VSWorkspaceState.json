@@ -5,6 +5,6 @@
     "\\JSON",
     "\\PowerShell"
   ],
-  "SelectedNode": "\\JSON\\Template_VirtualNetwork.json",
+  "SelectedNode": "\\JSON\\Template_LocalNetworkGateway.json",
   "PreviewInSolutionExplorer": false
 }
