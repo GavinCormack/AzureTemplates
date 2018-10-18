@@ -484,22 +484,6 @@
 						},
 						{
 							"type": "int",
-							"name": "Number Of RDSs"
-						},
-						{
-							"type": "int",
-							"name": "Number Of FSs"
-						},
-						{
-							"type": "int",
-							"name": "Number Of SQLs"
-						},
-						{
-							"type": "int",
-							"name": "Number Of Customs"
-						},
-						{
-							"type": "int",
 							"name": "VM Index"
 						}
 					],
@@ -507,7 +491,7 @@
 					{
 
 						"type": "string",
-						"value": "[ if( less( parameters( 'VM Index' ), parameters( 'Number Of DCs' ) ), concat( '10.1.1.', if( equals( parameters( 'Number Of DCs' ), 0 ), add( parameters( 'VM Index' ), 4 ), add( parameters( 'VM Index' ), 4 ) ) ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), parameters( 'Number Of RDSs' ) ) ), concat( '10.1.1.', if( equals( parameters( 'Number Of DCs' ), 0 ), add( parameters( 'VM Index' ), 6 ), add( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), 4 ) ) ) ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), parameters( 'Number Of FSs' ) ) ) ), concat( '10.1.1.', if( equals( parameters( 'Number Of DCs' ), 0 ), add( parameters( 'VM Index' ), add( parameters( 'Number Of RDSs' ), 6 ) ), add( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), 4 ) ) ) ) ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), parameters( 'Number Of SQLs' ) ) ) ) ), concat( '10.1.1.', if( equals( parameters( 'Number Of DCs' ), 0 ), add( parameters( 'VM Index' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), 6 ) ) ), add( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), 4 ) ) ) ) ) ), if( less( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), add( parameters( 'Number Of SQLs' ), parameters( 'Number Of Customs' ) ) ) ) ) ), concat( '10.1.1.', if( equals( parameters( 'Number Of DCs' ), 0 ), add( parameters( 'VM Index' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), add( parameters( 'Number Of SQLs' ), 6 ) ) ) ), add( parameters( 'VM Index' ), add( parameters( 'Number Of DCs' ), add( parameters( 'Number Of RDSs' ), add( parameters( 'Number Of FSs' ), add( parameters( 'Number Of SQLs' ), 4 ) ) ) ) ) ) ), '10.1.1.20' ) ) ) ) ) ]"
+						"value": "[ if( less( parameters( 'VM Index' ),  parameters( 'Number Of DCs' ) ), concat( '10.1.1.', add( parameters( 'VM Index' ), 4 ) ), concat( '10.1.1.', if( equals( parameters( 'Number Of DCs' ), 0 ), add( parameters( 'VM Index' ), 6 ), add( parameters( 'VM Index' ), 4 ) ) ) ) ]"
 					}
 				},
 				"getVMNameArray":
@@ -995,7 +979,7 @@
 					},
 					"NIC IP":
 					{
-						"value": "[ GavFunctions.getNICIPArray( variables( 'NumberOfDCServers' ), parameters( 'Number of RDS Servers' ), parameters( 'Number of FS Servers' ), parameters( 'Number of SQL Servers' ), parameters( 'Number of Custom Servers' ),  copyIndex() ) ]"
+						"value": "[ GavFunctions.getNICIPArray( variables( 'NumberOfDCServers' ),  copyIndex() ) ]"
 					},
 					"PIP ID":
 					{
