@@ -936,7 +936,7 @@
                 "osProfile":
                 {
                     "adminPassword": "[ parameters( 'Local Admin Password' ) ]",
-                    "adminUsername": "zadmin",
+                    "adminUsername": "<username>",
                     "computerName": "[ if( greater( length( parameters( 'Custom Domain Controller Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom Domain Controller Names' )[ 0 ] ), concat( parameters( 'Company Prefix' ), '-DC-01' ) ) ]",
                     "windowsConfiguration":
                     {
@@ -1018,7 +1018,7 @@
                 "osProfile":
                 {
                     "adminPassword": "[ parameters( 'Local Admin Password' ) ]",
-                    "adminUsername": "zadmin",
+                    "adminUsername": "<username>",
                     "computerName": "[ if( greater( length( parameters( 'Custom Domain Controller Names' ) ), 1 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom Domain Controller Names' )[ copyIndex( 1 ) ] ), concat( parameters( 'Company Prefix' ), '-DC-0', add( copyIndex(), 2 ) ) ) ]",
                     "windowsConfiguration":
                     {
@@ -1089,7 +1089,7 @@
                 "osProfile":
                 {
                     "adminPassword": "[ parameters( 'Local Admin Password' ) ]",
-                    "adminUsername": "zadmin",
+                    "adminUsername": "<username>",
                     "computerName": "[ if( greater( length( parameters( 'Custom RDS Server Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom RDS Server Names' )[ 0 ] ), concat( parameters( 'Company Prefix' ), '-RDS-01' ) ) ]",
                     "windowsConfiguration":
                     {
@@ -1167,7 +1167,7 @@
                 "osProfile":
                 {
                     "adminPassword": "[ parameters( 'Local Admin Password' ) ]",
-                    "adminUsername": "zadmin",
+                    "adminUsername": "<username>",
                     "computerName": "[ if( greater( length( parameters( 'Custom RDS Server Names' ) ), 1 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom RDS Server Names' )[ copyIndex( 1 ) ] ), concat( parameters( 'Company Prefix' ), '-RDS-0', add( copyIndex(), 2 ) ) ) ]",
                     "windowsConfiguration":
                     {
@@ -1238,7 +1238,7 @@
                 "osProfile":
                 {
                     "adminPassword": "[ parameters( 'Local Admin Password' ) ]",
-                    "adminUsername": "zadmin",
+                    "adminUsername": "<username>",
                     "computerName": "[ if( greater( length( parameters( 'Custom File Server Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom File Server Names' )[ 0 ] ), concat( parameters( 'Company Prefix' ), '-FS-01' ) ) ]",
                     "windowsConfiguration":
                     {
@@ -1316,7 +1316,7 @@
                 "osProfile":
                 {
                     "adminPassword": "[ parameters( 'Local Admin Password' ) ]",
-                    "adminUsername": "zadmin",
+                    "adminUsername": "<username>",
                     "computerName": "[ if( greater( length( parameters( 'Custom File Server Names' ) ), 1 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom File Server Names' )[ copyIndex( 1 ) ] ), concat( parameters( 'Company Prefix' ), '-FS-0', add( copyIndex(), 2 ) ) ) ]",
                     "windowsConfiguration":
                     {
@@ -1387,7 +1387,7 @@
                 "osProfile":
                 {
                     "adminPassword": "[ parameters( 'Local Admin Password' ) ]",
-                    "adminUsername": "zadmin",
+                    "adminUsername": "<username>",
                     "computerName": "[ if( greater( length( parameters( 'Custom SQL Server Names' ) ), 0 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom SQL Server Names' )[ 0 ] ), concat( parameters( 'Company Prefix' ), '-SQL-01' ) ) ]",
                     "windowsConfiguration":
                     {
@@ -1465,7 +1465,7 @@
                 "osProfile":
                 {
                     "adminPassword": "[ parameters( 'Local Admin Password' ) ]",
-                    "adminUsername": "zadmin",
+                    "adminUsername": "<username>",
                     "computerName": "[ if( greater( length( parameters( 'Custom SQL Server Names' ) ), 1 ), concat( parameters( 'Company Prefix' ), '-', parameters( 'Custom SQL Server Names' )[ copyIndex( 1 ) ] ), concat( parameters( 'Company Prefix' ), '-SQL-0', add( copyIndex(), 2 ) ) ) ]",
                     "windowsConfiguration":
                     {
