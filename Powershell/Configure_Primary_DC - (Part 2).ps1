@@ -53,11 +53,11 @@ Write-Host ""
 Start-Sleep -s 1
 
 
-Write-Host "    Setting Zadmin Password to Never Expire..."
+Write-Host "    Setting Admin Password to Never Expire..."
 Write-Host ""
 
-# Set Zadmin Password to Never Expire
-Set-ADUser -Identity "zadmin" -PasswordNeverExpires:$true
+# Set Admin Password to Never Expire
+Set-ADUser -Identity "Administrator" -PasswordNeverExpires:$true
 
 
 Write-Host "    Creating RDPUsers OU..."
