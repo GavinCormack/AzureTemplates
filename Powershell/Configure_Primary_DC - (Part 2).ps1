@@ -186,8 +186,8 @@ Write-Host "    Opening Google Chrome..."
 Write-Host ""
 
 # Open Webpage in Chrome
-Start-Process -FilePath Chrome -ArgumentList "https://zinon-my.sharepoint.com/personal/gavin_zinon_ie/Documents/Forms/All.aspx?slrid=f7da919e-50f3-7000-546c-9979fd0f5fba&FolderCTID=0x01200016F9DDF3A879F443A5B37FBCCDFC302F&id=%2Fpersonal%2Fgavin_zinon_ie%2FDocuments%2FAzure_Setup%2FAzure_GPO"
-Start-Process -FilePath Chrome -ArgumentList "https://zinon-my.sharepoint.com/personal/gavin_zinon_ie/Documents/Forms/All.aspx?slrid=822a929e-80cd-7000-546c-9799abfb2f71&FolderCTID=0x01200016F9DDF3A879F443A5B37FBCCDFC302F&id=%2Fpersonal%2Fgavin_zinon_ie%2FDocuments%2FAzure_Setup%2FDesktop%20Backgrounds"
+Start-Process -FilePath Chrome -ArgumentList "<url>"
+Start-Process -FilePath Chrome -ArgumentList "<url>"
 
 
 
@@ -247,7 +247,7 @@ Import-GPO -BackupGpoName RDPUsers -Path $gpoPath -TargetName RDPUsers
 Write-Host "    Moving Desktop Background..."
 Write-Host ""
 
-# Move Desktop Background to C:\Zinon
+# Move Desktop Background to C:\<folder_name>
 Move-Item -Source $backgroundPath -Destination $scriptsPath
 
 
