@@ -1,2 +1,2 @@
 Domain,Username,Password, PrimaryDC
-JSON.local,JSON\zadmin,Kildare2017*, JSON-DC-01
+JSON.local,JSON\<username>,<password>, JSON-DC-01
