@@ -76,7 +76,7 @@ In the PowerShell folder you will find the scripts needed to configure the Serve
 		* You need to download files yourself.
 	* Extracts the downloaded files.
 	* Configure ADMX files and GPO.
-	* Moves Desktop Background image Background1.bmp to the C:\Zinon folder.
+	* Moves Desktop Background image Background1.bmp to the C:\<folder_name> folder.
 
 * Configure_Additional_DC - (Part 1)
 	* Sets the Date and Time to GMT.
@@ -121,16 +121,16 @@ Once the Azure ARM Template has completed & the CSV files have been completed, w
 	* Domain.csv
 	* Users.csv
 
-* Create a Zinon folder on the C Drive (C:\zinon) and place the files in there.
+* Create a <folder_name> folder on the C Drive (C:\<folder_name>) and place the files in there.
 * Once you have placed all the files in the folder, Run Powershell as Administrator.
 	* Please note **NOT PowerShell ISE**, normal PowerShell (the navy/purple one).
-* Once PowerShell opens, Change Directory to the Zinon folder you created and run the 'Configure_Primary_DC - (Part 1).ps1'.
+* Once PowerShell opens, Change Directory to the <folder_name> folder you created and run the 'Configure_Primary_DC - (Part 1).ps1'.
 * This will create the Domain as specified in the Domain.csv.
 * It will then reboot the Server.
 
 * Once the Server is back up, logon with the **Domain Admin Credentials**, not local Admin Credentials.
 * Run PowerShell as Administrator again.
-* Once PowerShell opens, Change Directory to the Zinon folder you created and run the 'Configure_Primary_DC - (Part 2).ps1'.
+* Once PowerShell opens, Change Directory to the <folder_name> folder you created and run the 'Configure_Primary_DC - (Part 2).ps1'.
 * This Script requires User Intervention.
 * In Section 3, two webpages will be opened in Google Chrome.
 * Download the ADMX_Template.zip , GPO.zip and Background1.bmp separately.
@@ -152,7 +152,7 @@ Once the Azure ARM Template has completed & the CSV files have been completed, w
 		* User Configuration / Policies / Administrative Templates / Desktop / Desktop / Desktop Wallpaper -> Change path to Primary DC
 * Create a Starter GPO which open the "New Starter.docx" file at login.
 * Create Mapped Drives Scripts.
-* Share the C:\Zinon folder with everyone.
+* Share the C:\<folder_name> folder with everyone.
 
 
 ---
@@ -167,16 +167,16 @@ Once the Azure ARM Template has completed & the CSV files have been completed, w
 	* Domain.csv
 	* Users.csv
 
-* Create a Zinon folder on the C Drive (C:\zinon) and place the files in there.
+* Create a <folder_name> folder on the C Drive (C:\<folder_name>) and place the files in there.
 * Once you have placed all the files in the folder, Run Powershell as Administrator.
 	* Please note **NOT PowerShell ISE**, normal PowerShell (the navy/purple one).
-* Once PowerShell opens, Change Directory to the Zinon folder you created and run the 'Configure_Additional_DC - (Part 1).ps1'.
+* Once PowerShell opens, Change Directory to the <folder_name> folder you created and run the 'Configure_Additional_DC - (Part 1).ps1'.
 * This will join the Domain as specified in the Domain.csv.
 * It will then reboot the Server.
 
 * Once the Server is back up, logon with the **Domain Admin Credentials**, not local Admin Credentials.
 * Run PowerShell as Administrator again.
-* Once PowerShell opens, Change Directory to the Zinon folder you created and run the 'Configure_Additional_DC - (Part 2).ps1'.
+* Once PowerShell opens, Change Directory to the <folder_name> folder you created and run the 'Configure_Additional_DC - (Part 2).ps1'.
 * Once the script finishes it will reboot the Server one last time.
 
 
@@ -196,23 +196,23 @@ Once the Azure ARM Template has completed & the CSV files have been completed, w
 	* Domain.csv
 	* Users.csv
 
-* Create a Zinon folder on the C Drive (C:\zinon) and place the files in there.
+* Create a <folder_name> folder on the C Drive (C:\<folder_name>) and place the files in there.
 * Once you have placed all the files in the folder, Run Powershell as Administrator.
 	* Please note **NOT PowerShell ISE**, normal PowerShell (the navy/purple one).
-* Once PowerShell opens, Change Directory to the Zinon folder you created and run the 'Configure_FileServer_or_SQLServer - (Part 1).ps1'.
+* Once PowerShell opens, Change Directory to the <folder_name> folder you created and run the 'Configure_FileServer_or_SQLServer - (Part 1).ps1'.
 * This will join the Domain as specified in the Domain.csv.
 * It will then reboot the Server.
 
 * Once the Server is back up, logon with the **Domain Admin Credentials**, not local Admin Credentials.
 * Run PowerShell as Administrator again.
-* Once PowerShell opens, Change Directory to the Zinon folder you created and run the 'Configure_FileServer_or_SQLServer - (Part 2).ps1'.
+* Once PowerShell opens, Change Directory to the <folder_name> folder you created and run the 'Configure_FileServer_or_SQLServer - (Part 2).ps1'.
 * Once the script finishes it will reboot the Server one last time.
 
 
 ##### TODO:
 * If it is a File Server:
 	* Configure the Data Disk Attached.
-	* Create the Data folder, RDPUsers folder, Zinon folder etc.
+	* Create the Data folder, RDPUsers folder, <folder_name> folder etc.
 * If it is a SQL Server:
 	* Nothing
 
@@ -230,22 +230,22 @@ Once the Azure ARM Template has completed & the CSV files have been completed, w
 	* Domain.csv
 	* Users.csv
 
-* Create a Zinon folder on the C Drive (C:\zinon) and place the files in there.
+* Create a <folder_name> folder on the C Drive (C:\<folder_name>) and place the files in there.
 * Once you have placed all the files in the folder, Run Powershell as Administrator.
 	* Please note **NOT PowerShell ISE**, normal PowerShell (the navy/purple one).
-* Once PowerShell opens, Change Directory to the Zinon folder you created and run the 'Configure_RDSServer - (Part 1).ps1'.
+* Once PowerShell opens, Change Directory to the <folder_name> folder you created and run the 'Configure_RDSServer - (Part 1).ps1'.
 * This will join the Domain as specified in the Domain.csv.
 * It will then reboot the Server.
 
 * Once the Server is back up, logon with the **Domain Admin Credentials**, not local Admin Credentials.
 * Run PowerShell as Administrator again.
-* Once PowerShell opens, Change Directory to the Zinon folder you created and run the 'Configure_RDSServer - (Part 2).ps1'.
+* Once PowerShell opens, Change Directory to the <folder_name> folder you created and run the 'Configure_RDSServer - (Part 2).ps1'.
 * This will install the necessary Roles & Features needed.
 * It will then reboot the Server.
 
 * Once the Server is back up, logon with the **Domain Admin Credentials**, not local Admin Credentials.
 * Run PowerShell as Administrator again.
-* Once PowerShell opens, Change Directory to the Zinon folder you created and run the 'Configure_RDSServer - (Part 3).ps1'.
+* Once PowerShell opens, Change Directory to the <folder_name> folder you created and run the 'Configure_RDSServer - (Part 3).ps1'.
 * This Script requires User Intervention.
 * A webpages will be opened in Google Chrome.
 * Download the 'Office 2016 Pro Plus - SW_DVD5_Office_Professional_Plus_2016_W32_English_MLF_X20-41353.ISO' file.
