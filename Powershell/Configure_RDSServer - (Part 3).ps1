@@ -1,7 +1,7 @@
 ﻿
 #########################################
 ###                                   ###
-##  Configure  RDSL Server - (Part 3)  ##
+##  Configure  RDS Server - (Part 3)  ##
 ###                                   ###
 #########################################
 
@@ -100,7 +100,7 @@ Write-Host "    Opening Google Chrome..."
 Write-Host ""
 
 # Open Webpage in Chrome
-Start-Process -FilePath Chrome -ArgumentList "https://zinon-my.sharepoint.com/personal/gavin_zinon_ie/Documents/Forms/All.aspx?slrid=822a929e-80cd-7000-546c-9799abfb2f71&FolderCTID=0x01200016F9DDF3A879F443A5B37FBCCDFC302F&id=%2Fpersonal%2Fgavin_zinon_ie%2FDocuments%2FAzure_Setup%2FSoftware"
+Start-Process -FilePath Chrome -ArgumentList "<url>"
 Start-Process -FilePath Chrome -ArgumentList "http://go.microsoft.com/fwlink/?LinkID=229321"
 
 
