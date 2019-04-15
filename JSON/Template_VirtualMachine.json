@@ -77,7 +77,7 @@
 				"osProfile":
 				{
 					"adminPassword": "[ parameters( 'Local Admin Password' ) ]",
-					"adminUsername": "zadmin",
+					"adminUsername": "<username>",
 					"computerName": "[ parameters( 'Virtual Machine Name' ) ]",
 					"windowsConfiguration":
 					{
