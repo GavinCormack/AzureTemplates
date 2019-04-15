@@ -39,7 +39,7 @@
 		"Current System External IP":
 		{
 			"type": "string",
-			"defaultValue": "193.120.46.36",
+			"defaultValue": "<Public_IP>",
 			"metadata":
 			{
 				"description": "The External address for the VPN to connect to. If in VMware leave as SonicWall Address, if On-Prem change to Public IP Address."
